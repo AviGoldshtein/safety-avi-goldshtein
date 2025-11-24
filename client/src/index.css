@@ -1,0 +1,15 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+
+*::selection{
+  background-color: rgb(29, 90, 159);
+  color: white;
+}
+
+body{
+  background-color: rgb(26, 26, 26);
+  color: rgb(216, 216, 216);
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}

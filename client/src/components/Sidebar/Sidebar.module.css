@@ -1,0 +1,55 @@
+.sidebar {
+  position: fixed;
+  top: 120px;         /* בדיוק מתחת להדר */
+  bottom: 80px;      /* בדיוק מעל הפוטר */
+  right: 0;
+  width: 220px;
+  background: #1f2533;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  border-radius: 20px 0 0 20px;
+  overflow-y: auto;   /* סיידבר עצמו יגלול אם ארוך */
+  z-index: 10000;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.nav a {
+  color: white;
+  text-decoration: none;
+  padding: 10px;
+  border-radius: 6px;
+  transition: 0.2s;
+}
+
+.nav a:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.exampleBtn {
+  margin-top: auto;
+  padding: 10px;
+  background: #4a74f5;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  box-shadow: 3px 3px 5px black;
+}
+
+ .exampleBtn:focus{
+  outline: none;
+  box-shadow: 3px 3px 5px black;
+}
+
+.exampleBtn:hover {
+  opacity: 0.8;
+  transform: translateY(-2px);
+}

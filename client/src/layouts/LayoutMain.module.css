@@ -1,0 +1,21 @@
+.layoutContainer {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding-top: 110px;   /* גובה ההדר */
+  padding-bottom: 70px; /* גובה הפוטר */
+}
+
+.contentWrapper {
+  display: flex;
+  flex: 1;
+}
+
+.main {
+  margin-right: 260px; /* מקום לסיידבר */
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

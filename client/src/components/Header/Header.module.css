@@ -1,0 +1,16 @@
+.headerContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(13, 40, 71, 0.9);
+  text-align: center;
+  padding: 15px;
+  z-index: 1000;
+}
+
+
+.headerContainer h1{
+    font-size: 3.2em;
+    padding: 10px;
+}

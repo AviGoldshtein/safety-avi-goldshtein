@@ -1,0 +1,29 @@
+.sectionContainer {
+    background-color: #e2e2e2;
+    padding: 20px;
+    margin: 15px 0;
+    border-radius: 15px;
+    max-width: 650px;
+    min-width: 350px;
+    text-align: right;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+}
+
+.sectionTitle {
+    font-size: 2em;
+    margin-bottom: 5px;
+    color: #003366;
+}
+
+.sectionDivider {
+    margin-bottom: 15px;
+    border: 0;
+    height: 2px;
+    background: #bbb;
+}
+
+.sectionContent {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}

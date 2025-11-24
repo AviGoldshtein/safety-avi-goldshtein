@@ -1,0 +1,84 @@
+.wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.selected {
+    padding: 10px;
+    background: white;
+    border: 1px solid #aaa;
+    border-radius: 10px;
+    cursor: pointer;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    transition: 0.2s;
+
+    /* טקסט חד */
+    color: #000;
+    font-weight: 500;
+}
+
+.selected:hover {
+    border-color: #666;
+}
+
+.arrow {
+    transition: transform 0.25s;
+    color: #000; /* החץ גם יהיה חד */
+}
+
+.open {
+    transform: rotate(180deg);
+}
+
+.list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    position: absolute;
+    width: 100%;
+    top: 110%;
+    left: 0;
+
+    background: white;
+    border: 1px solid #aaa;
+    border-radius: 10px;
+
+    overflow: hidden;
+    z-index: 10;
+
+    animation: fadeIn 0.15s ease-out;
+
+    /* טקסט חד */
+    color: #000;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.option {
+    padding: 10px;
+    cursor: pointer;
+
+    /* טקסט חד ברור */
+    color: #000;
+    font-weight: 400;
+
+    transition: 0.2s;
+}
+
+.option:hover {
+    background: #e6f7ff;
+}

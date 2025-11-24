@@ -1,0 +1,170 @@
+.formHeader{
+  font-size: 2.2em;
+  font-style: italic;
+}
+.formContainrWraper{
+  padding: 10px;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ background-color: #212f52;
+ width: fit-content;
+ max-width: 100%;
+ border-radius: 15px;
+}
+.formContainr{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    background-color: rgb(71, 70, 79);
+    margin: 20px;
+    padding: 20px;
+    max-width: 1300px;
+    border-radius: 20px;
+    gap: 15px;
+    color: black;
+}
+.flexRowContainer{
+    display: flex;
+    gap: 15px;
+}
+.flexRowContainer > * {
+    flex: 1;
+}
+.lableWraper{
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-top: 10px;
+    background-color: rgb(160, 203, 255);
+    margin: 3px;
+    padding: 5px;
+    border-radius: 10px;
+    line-height: 1.3em;
+}
+
+.textarea {
+    width: 90%;
+    margin: 0 auto;
+    background-color: rgb(221, 221, 221);
+    border: 2px solid black;
+    border-radius: 10px;
+    padding: 10px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+
+/* From Uiverse.io by Pradeepsaranbishnoi */ 
+:focus {
+  outline: 0;
+  border-color: #2260ff;
+  box-shadow: 0 0 0 4px #b5c9fc;
+}
+
+.mydict div {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+  justify-content: center;
+}
+
+.mydict input[type="radio"] {
+  clip: rect(0 0 0 0);
+  clip-path: inset(100%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.mydict input[type="radio"]:checked + span {
+  box-shadow: 0 0 0 0.0625em #0043ed;
+  background-color: #dee7ff;
+  z-index: 1;
+  color: #0043ed;
+}
+
+label span {
+  display: block;
+  cursor: pointer;
+  background-color: #fff;
+  padding: 0.375em .75em;
+  position: relative;
+  margin-left: .0625em;
+  box-shadow: 0 0 0 0.0625em #b5bfd9;
+  letter-spacing: .05em;
+  color: #3e4963;
+  text-align: center;
+  transition: background-color 0.5s ease;
+}
+
+label:first-child span {
+  border-radius: .375em 0 0 .375em;
+}
+
+label:last-child span {
+  border-radius: 0 .375em .375em 0;
+}
+
+
+.submitBtn {
+  margin-top: auto;
+  padding: 10px 25px;
+  background: #4a74f5;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 2em;
+  box-shadow: 3px 3px 5px black;
+  transition: all 0.3s ease;
+}
+
+ .submitBtn:focus{
+  outline: none;
+  box-shadow: 3px 3px 5px black;
+}
+
+.submitBtn:hover {
+  opacity: 0.8;
+  transform: translateY(-2px);
+}
+
+
+.latLng{
+  background-color: white;
+  padding: 3px;
+  margin: 10px;
+  border: 1px solid black;
+  border-radius: 15%;
+  text-align: center;
+}
+.locationBtn{
+  background-color: rgb(127, 163, 255);
+  border: none;
+  width: fit-content;
+  padding: 10px;
+  margin: 10px 0 10px 0;
+  cursor: pointer;
+  border-radius: 15px;
+}
+
+.inputLoc{
+  padding: 7px;
+  border-radius: 15px;
+  border: none;
+}
+
+.error {
+  color: #d60000;
+  font-size: 0.85rem;
+  margin: 4px 2px;
+}
+.timeInput{
+  background-color: #dadada;
+  padding: 7px;
+  border-radius: 15px;
+  border: none;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
