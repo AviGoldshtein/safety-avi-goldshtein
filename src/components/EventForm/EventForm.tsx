@@ -6,6 +6,7 @@ import RadioGroup from "../RadioGroup/RadioGroup";
 import EventFormSection from "../EventFormSection/EventFormSection";
 import { useEventForm } from "../../hooks/useEventForm";
 import FormField from "../FormField/FormField";
+import { LOCATION_CIVIL, RESULT_HAS_INJURED } from "../../constants/eventConstants";
 
 
 export default function EventForm() {
@@ -64,12 +65,12 @@ export default function EventForm() {
                     </FormField>
                 </EventFormSection>
 
-                {formData.location?.includes("שטח אזרחי") && (
+                {formData.location?.includes(LOCATION_CIVIL) && (
                     <EventFormSection title={"מיקום מדויק"}>
 
                         <FormField label="סוג מיקום" error={errors.typeLocation} >
                             <RadioGroup
-                                options={["נצ", "לווין", "ידנית"]}
+                                options={options.typeLocationArr}
                                 value={formData.typeLocation}
                                 onChange={(val) => updateField("typeLocation", val)}
                                 name="typeLocation" />
@@ -173,7 +174,7 @@ export default function EventForm() {
                             onChange={(val) => updateField("results", val)} />
                     </FormField>
 
-                    {formData.results?.includes("יש נפגעים") && (
+                    {formData.results?.includes(RESULT_HAS_INJURED) && (
                         <FormField label="חומרת הפגיעה" error={errors.injuriesLevel}>
                             <CustomSelect
                                 options={options.injuriesLevelArr}

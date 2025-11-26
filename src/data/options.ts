@@ -59,6 +59,8 @@ const injuriesLevelArr = [
   "חלל",
 ] as const;
 
+const typeLocationArr = ["נצ", "לווין", "ידנית"] as const;
+
 
 const options = {
   unitActivityTypeArr,
@@ -67,7 +69,8 @@ const options = {
   locationArr,
   eventSeverityArr,
   resultsArr,
-  injuriesLevelArr
+  injuriesLevelArr,
+  typeLocationArr
 };
 
 export default options;
