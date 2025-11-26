@@ -24,7 +24,7 @@ export default function RadioGroup({ options, value, onChange, name }: RadioGrou
             <span>{opt}</span>
           </label>
         ))}
-      </div>
+    </div>
     </div>
   );
 }

@@ -32,3 +32,23 @@ export interface Location {
     lat: number;
     lng: number;
 }
+
+export interface FormData {
+    unitActivityType: string;
+    activityType: string;
+    category: string;
+    location: string;
+
+    typeLocation: string;
+    inputLat: string;
+    inputLng: string;
+    stringLoc: string;
+    currentLocation: Location | null;
+
+    eventDescription: string;
+    subUnits: string;
+    eventSeverity: string;
+    results: string;
+    injuriesLevel: string;
+    eventDateTime: string;
+}
