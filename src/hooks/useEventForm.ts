@@ -80,7 +80,19 @@ export function useEventForm() {
         if (Object.keys(newErrors).length > 0) return;
 
         callback(formData);
+
+        saveEventToLocalStorage(formData);
+        
         resetForm();
+    }
+
+    function saveEventToLocalStorage(event: FormData) {
+        const existing = localStorage.getItem("eventsList");
+        const events = existing ? JSON.parse(existing) : [];
+
+        events.push(event);
+
+        localStorage.setItem("eventsList", JSON.stringify(events));
     }
 
     return {
