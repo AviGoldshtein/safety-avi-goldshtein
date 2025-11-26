@@ -1,0 +1,17 @@
+.lableWraper{
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-top: 10px;
+    background-color: rgb(160, 203, 255);
+    margin: 3px;
+    padding: 5px;
+    border-radius: 10px;
+    line-height: 1.3em;
+}
+
+.error {
+  color: #d60000;
+  font-size: 0.85rem;
+  margin: 4px 2px;
+}

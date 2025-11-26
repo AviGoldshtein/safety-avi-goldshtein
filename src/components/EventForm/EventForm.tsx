@@ -5,6 +5,7 @@ import CustomSelect from '../CustomSelect/CustomSelect'
 import RadioGroup from "../RadioGroup/RadioGroup";
 import EventFormSection from "../EventFormSection/EventFormSection";
 import { useEventForm } from "../../hooks/useEventForm";
+import FormField from "../FormField/FormField";
 
 
 export default function EventForm() {
@@ -25,7 +26,6 @@ export default function EventForm() {
     }
 
     return(
-        // <form onSubmit={handleSubmit} className={styles.formContainrWraper}>
         <form onSubmit={onSubmit} className={styles.formContainrWraper}>
             <h1 className={styles.formHeader}>הזנת פרטי האירוע</h1>
 
@@ -33,199 +33,155 @@ export default function EventForm() {
 
                 <EventFormSection title={"פרטים"}>
                     <div className={styles.flexRowContainer}>
-                        <div className={styles.lableWraper}>
-                            <label htmlFor="">מאפיין פעילות היחידה</label>
+                        <FormField label="מאפיין פעילות היחידה" error={errors.unitActivityType} >
                             <CustomSelect
                                 options={options.unitActivityTypeArr}
                                 value={formData.unitActivityType}
-                                onChange={(val) => updateField("unitActivityType", val)}
-                            />
-                            {errors.unitActivityType && <p className={styles.error}>{errors.unitActivityType}</p>}
-                        </div>
-                        <div className={styles.lableWraper}>
-                            <label htmlFor="">מאפיין פעילות הפרט</label>
+                                onChange={(val) => updateField("unitActivityType", val)} />
+                        </FormField>
+
+                        <FormField label="מאפיין פעילות הפרט" error={errors.activityType} >
                             <CustomSelect
                                 options={options.activityTypeArr}
                                 value={formData.activityType}
-                                onChange={(val) => updateField("activityType", val)}
-                            />
-                            {errors.activityType && <p className={styles.error}>{errors.activityType}</p>}
-                        </div>
+                                onChange={(val) => updateField("activityType", val)} />
+                        </FormField>
                     </div>
 
-                    <div className={styles.flexRowContainer}>
-                        <div className={styles.lableWraper}>
-                            <label htmlFor="">מאפיין תחומי</label>
-                            <CustomSelect
-                                options={options.categoryArr}
-                                value={formData.category}
-                                onChange={(val) => updateField("category", val)}
-                            />
-                            {errors.category && <p className={styles.error}>{errors.category}</p>}
-                        </div>
-                    </div>
+                    <FormField label="מאפיין תחומי" error={errors.category} >
+                        <CustomSelect
+                            options={options.categoryArr}
+                            value={formData.category}
+                            onChange={(val) => updateField("category", val)} />
+                    </FormField>
 
-                    <div className={styles.lableWraper}>
-                        <label htmlFor="">מקום האירוע</label>
-
+                    <FormField label="מקום האירוע" error={errors.location} >
                         <RadioGroup
                             options={options.locationArr}
                             value={formData.location}
                             onChange={(val) => updateField("location", val)}
-                            name="location"
-                        />
-                        {errors.location && <p className={styles.error}>{errors.location}</p>}
-                    </div>
+                            name="location" />
+                    </FormField>
                 </EventFormSection>
-
 
                 {formData.location?.includes("שטח אזרחי") && (
                     <EventFormSection title={"מיקום מדויק"}>
 
-                        <RadioGroup
-                            options={["נצ", "לווין", "ידנית"]}
-                            value={formData.typeLocation}
-                            onChange={(val) => updateField("typeLocation", val)}
-                            name="typeLocation"
-                            />
-
-                        <div className={styles.lableWraper}>
-                        <label>הוסף מיקום</label>
-                        {errors.typeLocation && <p className={styles.error}>{errors.typeLocation}</p>}
-
+                        <FormField label="סוג מיקום" error={errors.typeLocation} >
+                            <RadioGroup
+                                options={["נצ", "לווין", "ידנית"]}
+                                value={formData.typeLocation}
+                                onChange={(val) => updateField("typeLocation", val)}
+                                name="typeLocation" />
+                        </FormField>
+                    
                         {formData.typeLocation === "נצ" && (
                             <>
-                            <label htmlFor="lon">אורך:</label>
-                            <input 
-                                className={styles.inputLoc} 
-                                id="lon" 
-                                type="number" 
-                                placeholder="הכנס את הספרות של אורך"
-                                value={formData.inputLng}
-                                onChange={(e) => updateField("inputLng", e.target.value)}
-                                />
-                                {errors.inputLng && <p className={styles.error}>{errors.inputLng}</p>}
+                            <FormField label="אורך:" error={errors.inputLng} >
+                                <input 
+                                    className={styles.inputLoc} 
+                                    id="lon" 
+                                    type="number" 
+                                    placeholder="הכנס את הספרות של אורך"
+                                    value={formData.inputLng}
+                                    onChange={(e) => updateField("inputLng", e.target.value)} />
+                            </FormField>
 
-                            <label htmlFor="lat">רוחב:</label>
-                            <input 
-                                className={styles.inputLoc} 
-                                id="lat" 
-                                type="number" 
-                                placeholder="הכנס את הספרות של רוחב"
-                                value={formData.inputLat}
-                                onChange={(e) => updateField("inputLat", e.target.value)}
-                                />
-                                {errors.inputLat && <p className={styles.error}>{errors.inputLat}</p>}
+                            <FormField label="רוחב:" error={errors.inputLat} >
+                                <input 
+                                    className={styles.inputLoc} 
+                                    id="lat" 
+                                    type="number" 
+                                    placeholder="הכנס את הספרות של רוחב"
+                                    value={formData.inputLat}
+                                    onChange={(e) => updateField("inputLat", e.target.value)} />
+                            </FormField>
                             </>
                         )}
 
                         {formData.typeLocation === "לווין" && (
-                            <>
-                            <button type="button" className={styles.locationBtn} onClick={takeCurrentLocation}>
-                                קח מיקום עכשיו
-                            </button>
+                            <FormField label="מיקום לוויני:" error={errors.currentLocation}>
+                                <button type="button" className={styles.locationBtn} onClick={takeCurrentLocation}>
+                                    קח מיקום עכשיו
+                                </button>
 
-                            {formData.currentLocation && (
-                                <div>
-                                    <h2>המיקום שנבחר:</h2>
-                                    <p className={styles.latLng}>אורך: {formData.currentLocation.lat}</p>
-                                    <p className={styles.latLng}>רוחב: {formData.currentLocation.lng}</p>
-                                </div>
-                            )}
-                            {errors.currentLocation && <p className={styles.error}>{errors.currentLocation}</p>}
-                            </>
+                                {formData.currentLocation && (
+                                    <div>
+                                        <h2>המיקום שנבחר:</h2>
+                                        <p className={styles.latLng}>אורך: {formData.currentLocation.lat}</p>
+                                        <p className={styles.latLng}>רוחב: {formData.currentLocation.lng}</p>
+                                    </div>
+                                )}
+                            </FormField>
                         )}
 
                         {formData.typeLocation === "ידנית" && (
-                            <>
-                            <input 
-                                className={styles.inputLoc} 
-                                type="text" 
-                                placeholder="הוסף כאן בכתב את המיקום"
-                                value={formData.stringLoc}
-                                onChange={(e) => updateField("stringLoc", e.target.value)}
-                                 />
-                                {errors.stringLoc && <p className={styles.error}>{errors.stringLoc}</p>}
-                            </>
-                                
+                            <FormField label="כתוב מיקום:" error={errors.stringLoc}>
+                                <input 
+                                    className={styles.inputLoc} 
+                                    type="text" 
+                                    placeholder="הוסף כאן בכתב את המיקום"
+                                    value={formData.stringLoc}
+                                    onChange={(e) => updateField("stringLoc", e.target.value)} />
+                            </FormField>
                         )}
-                        </div>
                     </EventFormSection>
                 )}
 
-
                 <EventFormSection title={"תיאור האירוע"}>
-                    <div className={styles.lableWraper}>
-                        <label htmlFor="">חומרת האירוע</label>
+                    <FormField label="חומרת האירוע" error={errors.eventSeverity}>
                         <RadioGroup
                             options={options.eventSeverityArr}
                             value={formData.eventSeverity}
                             onChange={(val) => updateField("eventSeverity", val)}
-                            name="eventSeverity"
-                        />
-                        {errors.eventSeverity && <p className={styles.error}>{errors.eventSeverity}</p>}
-                    </div>
-                    <div className={styles.lableWraper}>
-                        <label htmlFor="">פירוט נרחב</label>
+                            name="eventSeverity" />
+                    </FormField>
+
+                    <FormField label="פירוט נרחב" error={errors.eventDescription}>
                         <textarea
                             className={styles.textarea}
                             placeholder="כתוב כאן פירוט עד 800 מילים"
                             value={formData.eventDescription}
                             onChange={(e) => updateField("eventDescription", e.target.value)}
                         ></textarea>
-                        {errors.eventDescription && <p className={styles.error}>{errors.eventDescription}</p>}
-                    </div>
-                    <div className={styles.lableWraper}>
-                        <label htmlFor="">יחידות משנה</label>
+                    </FormField>
+
+                    <FormField label="יחידות משנה" error={errors.subUnits}>
                         <textarea
                             className={styles.textarea}
                             placeholder="כתוב כאן פירוט עד 800 מילים"
                             value={formData.subUnits}
                             onChange={(e) => updateField("subUnits", e.target.value)}
                         ></textarea>
-                        {errors.subUnits && <p className={styles.error}>{errors.subUnits}</p>}
-                    </div>
+                    </FormField>
                 </EventFormSection>
 
-
                 <EventFormSection title={"תאריך, שעה ותוצאות האירוע"}>
-                    <div className={styles.lableWraper}>
-                        <label htmlFor="">תאריך ושעה</label>
+                    <FormField label="תאריך ושעה" error={errors.eventDateTime}>
                         <input
                             className={styles.timeInput}
                             type="datetime-local"
                             value={formData.eventDateTime}
                             onChange={(e) => updateField("eventDateTime", e.target.value)}
-                            max={new Date().toISOString().slice(0, 16)}
-                            />
-                        {errors.eventDateTime && <p className={styles.error}>{errors.eventDateTime}</p>}
-                    </div>
+                            max={new Date().toISOString().slice(0, 16)} />
+                    </FormField>
 
-                    <div className={styles.lableWraper}>
-                        <label htmlFor="">תוצאות האירוע</label>
+                    <FormField label="תוצאות האירוע" error={errors.results}>
                         <CustomSelect
                             options={options.resultsArr}
                             value={formData.results}
-                            onChange={(val) => updateField("results", val)}
-                            />
-                        {errors.results && <p className={styles.error}>{errors.results}</p>}
-                    </div>
-                </EventFormSection>
+                            onChange={(val) => updateField("results", val)} />
+                    </FormField>
 
-
-                {formData.results?.includes("יש נפגעים") && (
-                    <EventFormSection title={"עוצמות הפגיעה"}>
-                        <div className={styles.lableWraper}>
-                            <label htmlFor="">חומרת הפגיעה </label>
+                    {formData.results?.includes("יש נפגעים") && (
+                        <FormField label="חומרת הפגיעה" error={errors.injuriesLevel}>
                             <CustomSelect
                                 options={options.injuriesLevelArr}
                                 value={formData.injuriesLevel}
-                                onChange={(val) => updateField("injuriesLevel", val)}
-                            />
-                            {errors.injuriesLevel && <p className={styles.error}>{errors.injuriesLevel}</p>}
-                        </div>
-                    </EventFormSection>
-                )}
+                                onChange={(val) => updateField("injuriesLevel", val)} />
+                        </FormField>
+                    )}
+                </EventFormSection>
             </div>
 
             <button type="submit" className={styles.submitBtn}>
