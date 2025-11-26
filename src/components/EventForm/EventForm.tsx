@@ -1,102 +1,32 @@
-import { useState } from "react";
 import type { FormEvent } from "react";
-import type { FormErrors, FormData } from './types'
 import styles from './EventForm.module.css'
 import options from '../../data/options'
 import CustomSelect from '../CustomSelect/CustomSelect'
 import RadioGroup from "../RadioGroup/RadioGroup";
 import EventFormSection from "../EventFormSection/EventFormSection";
-import { validateEventForm } from "../../utiles/validateEventForm";
+import { useEventForm } from "../../hooks/useEventForm";
 
 
 export default function EventForm() {
 
-    const [errors, setErrors] = useState<FormErrors>({});
-    const [formData, setFormData] = useState<FormData>({
-        unitActivityType: "",
-        activityType: "",
-        category: "",
-        location: "",
+    const {
+        formData,
+        errors,
+        updateField,
+        takeCurrentLocation,
+        handleSubmit,
+    } = useEventForm();
 
-        typeLocation: "",
-        inputLat: "",
-        inputLng: "",
-        stringLoc: "",
-        currentLocation: null,
-
-        eventDescription: "",
-        subUnits: "",
-        eventSeverity: "",
-        results: "",
-        injuriesLevel: "",
-        eventDateTime: "",
-    });
-
-    function updateField<K extends keyof FormData>(key: K, value: FormData[K]) {
-        setFormData(prev => ({ ...prev, [key]: value }));
-    }
-
-    function takeCurrentLocation() {
-        if (!navigator.geolocation) {
-            alert("הדפדפן לא תומך במיקום");
-            return;
-        }
-
-        navigator.geolocation.getCurrentPosition(
-            (pos) => {
-                const { latitude, longitude } = pos.coords;
-
-                setFormData(prev => ({
-                    ...prev,
-                    currentLocation: {
-                        lat: latitude,
-                        lng: longitude
-                    }
-                }));
-            },
-            (err) => {
-                console.error(err);
-                alert("לא ניתן לקבל מיקום");
-            }
-        );
-    }
-
-    function resetForm(){
-        setFormData({
-            unitActivityType: "",
-            activityType: "",
-            category: "",
-            location: "",
-
-            typeLocation: "",
-            inputLat: "",
-            inputLng: "",
-            stringLoc: "",
-            currentLocation: null,
-
-            eventDescription: "",
-            subUnits: "",
-            eventSeverity: "",
-            results: "",
-            injuriesLevel: "",
-            eventDateTime: "",
+    function onSubmit(e: FormEvent<HTMLFormElement>) {
+        e.preventDefault();
+        handleSubmit((data) => {
+            console.log("EVENT:", data);
         });
     }
 
-    function handleSubmit(e: FormEvent<HTMLFormElement>) {
-        e.preventDefault()
-
-        const newErrors = validateEventForm(formData);
-
-        setErrors(newErrors);
-        if (Object.keys(newErrors).length > 0) return
-
-        console.log("EVENT:", formData);
-        resetForm()
-    }
-
     return(
-        <form onSubmit={handleSubmit} className={styles.formContainrWraper}>
+        // <form onSubmit={handleSubmit} className={styles.formContainrWraper}>
+        <form onSubmit={onSubmit} className={styles.formContainrWraper}>
             <h1 className={styles.formHeader}>הזנת פרטי האירוע</h1>
 
             <div className={styles.formContainr}>
