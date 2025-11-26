@@ -108,8 +108,8 @@ export default function EventForm() {
                                 {formData.currentLocation && (
                                     <div>
                                         <h2>המיקום שנבחר:</h2>
-                                        <p className={styles.latLng}>אורך: {formData.currentLocation.lat}</p>
-                                        <p className={styles.latLng}>רוחב: {formData.currentLocation.lng}</p>
+                                        <p className={styles.latLng}>אורך: {formData.currentLocation.lng}</p>
+                                        <p className={styles.latLng}>רוחב: {formData.currentLocation.lat}</p>
                                     </div>
                                 )}
                             </FormField>
