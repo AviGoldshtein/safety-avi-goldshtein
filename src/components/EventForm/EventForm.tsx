@@ -141,8 +141,9 @@ export default function EventForm() {
                     <FormField label="פירוט נרחב" error={errors.eventDescription}>
                         <textarea
                             className={styles.textarea}
-                            placeholder="כתוב כאן פירוט עד 800 מילים"
+                            placeholder="כתוב כאן פירוט עד 800 תווים"
                             value={formData.eventDescription}
+                            maxLength={800}
                             onChange={(e) => updateField("eventDescription", e.target.value)}
                         ></textarea>
                     </FormField>
@@ -150,8 +151,9 @@ export default function EventForm() {
                     <FormField label="יחידות משנה" error={errors.subUnits}>
                         <textarea
                             className={styles.textarea}
-                            placeholder="כתוב כאן פירוט עד 800 מילים"
+                            placeholder="כתוב כאן פירוט עד 800 תווים"
                             value={formData.subUnits}
+                            maxLength={800}
                             onChange={(e) => updateField("subUnits", e.target.value)}
                         ></textarea>
                     </FormField>
