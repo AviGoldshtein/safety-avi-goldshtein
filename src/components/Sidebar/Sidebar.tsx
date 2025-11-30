@@ -25,26 +25,26 @@ export default function Sidebar() {
           padding: "20px",
           display: "flex",
           flexDirection: "column",
-          gap: "30px",
+          gap: "10px",
           overflowY: "auto",
           bgcolor: theme.palette.mode === "dark" ? "#1f2533" : "#e7e9ef",
         }}
       >
         <List sx={{ display: "flex", flexDirection: "column", gap: "15px" }}>
-          <ListItemButton component={Link} to="/over-view">
-            <ListItemText primary="מבט על" />
+          <ListItemButton component={Link} to="/over-view" sx={{borderRadius: 1}}>
+            <ListItemText primary="מבט על" sx={{ textAlign: "right" }} />
           </ListItemButton>
 
-          <ListItemButton component={Link} to="/">
-            <ListItemText primary="הזנת אירוע" />
+          <ListItemButton component={Link} to="/" sx={{borderRadius: 1}}>
+            <ListItemText primary="הזנת אירוע" sx={{ textAlign: "right" }} />
           </ListItemButton>
 
-          <ListItemButton component={Link} to="/development">
-            <ListItemText primary="חיפוש אירועים" />
+          <ListItemButton component={Link} to="/development" sx={{borderRadius: 1}}>
+            <ListItemText primary="חיפוש אירועים" sx={{ textAlign: "right" }} />
           </ListItemButton>
 
-          <ListItemButton component={Link} to="/development">
-            <ListItemText primary="דוחות BI" />
+          <ListItemButton component={Link} to="/development" sx={{borderRadius: 1}}>
+            <ListItemText primary="דוחות BI" sx={{ textAlign: "right" }} />
           </ListItemButton>
         </List>
 
@@ -57,8 +57,8 @@ export default function Sidebar() {
             boxShadow: "3px 3px 5px black",
             transition: "all 0.3s ease",
             "&:hover": {
-              opacity: 0.8,
               transform: "translateY(-2px)",
+              boxShadow: "3px 3px 5px black",
             },
           }}
         >

@@ -1,5 +1,5 @@
 import type { FormEvent } from "react";
-import { Box, Container, Typography, Button, TextField } from "@mui/material";
+import { Box, Container, Typography, Button, TextField, useTheme } from "@mui/material";
 
 import options from '../../data/options';
 import CustomSelect from '../CustomSelect/CustomSelect';
@@ -10,6 +10,7 @@ import FormField from "../FormField/FormField";
 import { LOCATION_CIVIL, RESULT_HAS_INJURED } from "../../constants/eventConstants";
 
 export default function EventForm() {
+  const theme = useTheme();
   const { formData, errors, updateField, takeCurrentLocation, handleSubmit } = useEventForm();
 
   function onSubmit(e: FormEvent<HTMLFormElement>) {
@@ -27,11 +28,15 @@ export default function EventForm() {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        backgroundColor: "#212f52",
+        backgroundColor:
+            theme.palette.mode === "light"
+                ? "#d4e3ffff"
+                : "rgb(33, 47, 82)",
         padding: 2,
         borderRadius: 2,
         width: "fit-content",
         maxWidth: "100%",
+        transition: "background-color 0.3s ease",
       }}
     >
       <Typography
@@ -48,7 +53,11 @@ export default function EventForm() {
           flexWrap: "wrap",
           justifyContent: "center",
           gap: 2,
-          backgroundColor: "rgb(71,70,79)",
+          transition: "all 1s ease",
+          backgroundColor:
+            theme.palette.mode === "light"
+                ? "rgba(139, 140, 156, 1)"
+                : "rgb(71,70,79)",
           padding: 2,
           borderRadius: 3,
           color: "black",
@@ -243,6 +252,7 @@ export default function EventForm() {
           bgcolor: "#4a74f5",
           borderRadius: 1,
           boxShadow: 3,
+          transition: "all 0.3s ease",
           "&:hover": { opacity: 0.8, transform: "translateY(-2px)" },
         }}
       >
