@@ -1,49 +1,35 @@
-import { useState } from "react";
-import styles from "./CustomSelect.module.css";
-import { ChevronDown } from "lucide-react"; // חץ קטן ויפה
+import { TextField, MenuItem, useTheme } from "@mui/material";
 
 interface CustomSelectProps {
-    options: readonly string[];
-    value?: string;
-    onChange: (val: string) => void
+  options: readonly string[];
+  value?: string;
+  onChange: (val: string) => void;
 }
 
-export default function CustomSelect({ options = [], value, onChange }: CustomSelectProps) {
-    const [open, setOpen] = useState(false);
+export default function CustomSelect({ options, value, onChange }: CustomSelectProps) {
+  const theme = useTheme();
 
-    const handleSelect = (val: string) => {
-        onChange(val);
-        setOpen(false);
-    };
-
-    return (
-        <div className={styles.wrapper}>
-            <div 
-                className={styles.selected}
-                tabIndex={0}
-                onClick={() => setOpen(!open)}
-            >
-                <span>{value || "בחר..."}</span>
-
-                <ChevronDown 
-                    className={`${styles.arrow} ${open ? styles.open : ""}`}
-                    size={18}
-                />
-            </div>
-
-            {open && (
-                <ul className={styles.list}>
-                    {options.map((opt) => (
-                        <li 
-                            key={opt} 
-                            className={styles.option}
-                            onClick={() => handleSelect(opt)}
-                        >
-                            {opt}
-                        </li>
-                    ))}
-                </ul>
-            )}
-        </div>
-    );
+  return (
+    <TextField
+      select
+      value={value ?? ""}
+      onChange={(e) => onChange(e.target.value)}
+      size="small"
+      fullWidth
+      sx={{
+        bgcolor: theme.palette.mode === "dark" ? "#1f2533" : "#e7e9ef",
+        borderRadius: 2,
+      }}
+      SelectProps={{
+        displayEmpty: true,
+        renderValue: (selected) => !selected ? <em>בחר...</em> : selected as string
+      }}
+    >
+      {options.map((opt) => (
+        <MenuItem key={opt} value={opt}>
+          {opt}
+        </MenuItem>
+      ))}
+    </TextField>
+  );
 }
