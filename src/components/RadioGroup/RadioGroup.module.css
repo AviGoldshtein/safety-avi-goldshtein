@@ -1,5 +1,5 @@
 /* From Uiverse.io by Pradeepsaranbishnoi */ 
-:focus {
+.mydict :focus {
   outline: 0;
   border-color: #2260ff;
   box-shadow: 0 0 0 4px #b5c9fc;
@@ -49,4 +49,19 @@ label:last-child span {
 
 label:first-child span {
   border-radius: 0 .375em .375em 0;
+}
+
+
+.dark {
+  background: transparent;
+}
+.dark span {
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+  background-color: #1f2533;
+  color: #e7e9ef;
+}
+.dark input[type="radio"]:checked + span {
+  background-color: #1e293b;
+  color: #60a5fa;
+  box-shadow: 0 0 0 0.0625em #60a5fa;
 }
