@@ -31,6 +31,12 @@ export function ThemeModeProvider({ children }: ThemeModeProviderProps) {
       createTheme({
         palette: {
           mode,
+          primary: {
+            main: mode === "light" ? "#1976d2" : "#0A1A3F",
+          },
+            background: {
+                default: mode === "light" ? "#f5f5f5" : "#0b1220",
+            },
         },
       }),
     [mode]

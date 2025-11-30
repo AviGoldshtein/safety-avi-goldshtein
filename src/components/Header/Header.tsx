@@ -9,7 +9,12 @@ export default function Header() {
   const { mode, toggleMode } = useThemeMode();
 
   return (
-    <AppBar position="fixed">
+    <AppBar
+    position="fixed"
+    sx={{
+        backgroundColor: (theme) => theme.palette.primary.main,
+    }}
+    >
       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
         
         <Typography variant="h5" fontWeight="bold">
