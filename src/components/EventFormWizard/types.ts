@@ -44,7 +44,7 @@ export interface FormData {
     inputLat: string;
     inputLng: string;
     stringLoc: string;
-    currentLocation: Location;
+    currentLocation: Location | null;
     weather: string;
 
     eventDescription: string;

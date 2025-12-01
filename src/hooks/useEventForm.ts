@@ -14,7 +14,7 @@ export function useEventForm() {
         inputLat: "",
         inputLng: "",
         stringLoc: "",
-        currentLocation: {lng: 0, lat: 0},
+        currentLocation: null,
         weather: "",
 
         eventDescription: "",
@@ -60,18 +60,20 @@ export function useEventForm() {
     }
 
     function buildPayload(formData: FormData) {
-        if (formData.typeLocation === "לווין") return formData;
-
-        return {
-            ...formData,
-            currentLocation: {
-            lat: Number(formData.inputLat),
-            lng: Number(formData.inputLng),
-            },
-            inputLat: "",
-            inputLng: "",
-            stringLoc: "",
-        };
+        if (formData.typeLocation === "נצ"){
+            return {
+                ...formData,
+                currentLocation: {
+                lat: Number(formData.inputLat),
+                lng: Number(formData.inputLng),
+                },
+                inputLat: "",
+                inputLng: "",
+                stringLoc: "",
+            };
+        }
+        
+        return formData;
     }
 
     function handleSubmit(callback: (data: FormData) => void) {
