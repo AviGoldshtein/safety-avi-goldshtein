@@ -14,7 +14,8 @@ export function OverViewContent() {
         { key: "eventSeverity", label: "חומרה" },
         { key: "eventDescription", label: "פירוט" },
         { key: "subUnits", label: "תתי-יחידות" },
-        { key: "eventDateTime", label: "תאריך/שעה" },
+        { key: "eventDateTime", label: "תאריך" },
+        { key: "eventTime", label: "שעה" },
         { key: "results", label: "תוצאות" },
         { key: "injuriesLevel", label: "פגיעות" }
     ];

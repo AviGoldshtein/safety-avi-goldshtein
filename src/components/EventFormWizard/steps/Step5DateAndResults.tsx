@@ -10,13 +10,22 @@ export default function Step5DateAndResults({ formData, errors, updateField }: S
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-      <FormField label="תאריך ושעה" error={errors.eventDateTime}>
+      <FormField label="תאריך" error={errors.eventDateTime}>
         <TextField
-          type="datetime-local"
+          type="date"
           value={formData.eventDateTime}
           onChange={(e) => updateField("eventDateTime", e.target.value)}
-          inputProps={{ max: new Date().toISOString().slice(0, 16) }}
+          inputProps={{ max: new Date().toISOString().slice(0, 10) }}
           size="small"
+        />
+      </FormField>
+
+      <FormField label="שעה (לצפייה בלבד)">
+        <TextField
+          type="time"
+          value={formData.eventTime || ""}
+          size="small"
+          disabled
         />
       </FormField>
 

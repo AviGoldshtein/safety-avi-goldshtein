@@ -23,6 +23,7 @@ export function useEventForm() {
         results: "",
         injuriesLevel: "",
         eventDateTime: "",
+        eventTime: new Date().toTimeString().slice(0, 5)
     }
 
     const [errors, setErrors] = useState<FormErrors>({});
@@ -72,7 +73,7 @@ export function useEventForm() {
                 stringLoc: "",
             };
         }
-        
+
         return formData;
     }
 

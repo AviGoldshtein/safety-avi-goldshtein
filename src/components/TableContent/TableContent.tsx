@@ -1,3 +1,4 @@
+import { useTheme } from "@mui/material/styles";
 import {
   Table,
   TableBody,
@@ -19,13 +20,78 @@ interface TableContentProps {
 }
 
 export function TableContent({ content, columns }: TableContentProps) {
+    const theme = useTheme();
+
+    function isIsoDate(value: string) {
+        return /^\d{4}-\d{2}-\d{2}$/.test(value);
+    }
+
+    function convertIsoToDisplay(dateStr: string) {
+        const [year, month, day] = dateStr.split("-");
+        return `${day}/${month}/${year}`;
+    }
+
+    function objectToString(obj: any): string {
+        if (obj === null || obj === undefined) return "";
+        
+        if (typeof obj !== "object") return String(obj);
+
+        if (Array.isArray(obj)) {
+            return obj.map(objectToString).join(", ");
+        }
+
+        return Object.entries(obj)
+            .map(([key, value]) => {
+            if (typeof value === "object" && value !== null) {
+                return `${key}: { ${objectToString(value)} }`;
+            } else {
+                return `${key}: ${value}`;
+            }
+            })
+            .join("\n");
+    }
+
+    function formatCell(value: any): string {
+        if (!value) return "-";
+
+        if (typeof value === "string" && isIsoDate(value)) {
+            return convertIsoToDisplay(value);
+        }
+
+        if (typeof value === "object") {
+            value = objectToString(value);
+        }
+
+        if (typeof value === "string" && value.length > 70) {
+            return value.slice(0, 70) + "...";
+        }
+
+        return String(value);
+    }
+
   return (
     <TableContainer
       component={Paper}
       sx={{
-        backgroundColor: "#2d2d2dff",
+        backgroundColor: theme.palette.table.rowEven,
         maxHeight: 500,
         borderRadius: "7px",
+
+        "&::-webkit-scrollbar": {
+            width: "15px",
+        },
+        "&::-webkit-scrollbar-track": {
+            background: theme.palette.table.rowOdd,
+            borderRadius: "10px",
+        },
+        "&::-webkit-scrollbar-thumb": {
+            background: theme.palette.table.header,
+            borderRadius: "10px",
+            border: `2px solid ${theme.palette.table.rowOdd}`,
+            },
+        "&::-webkit-scrollbar-thumb:hover": {
+            background: theme.palette.table.hover,
+        },
       }}
     >
       <Table stickyHeader>
@@ -35,9 +101,10 @@ export function TableContent({ content, columns }: TableContentProps) {
               <TableCell
                 key={col.key}
                 sx={{
-                  backgroundColor: "#2a2a2a",
-                  color: "#e0e0e0",
+                  backgroundColor: theme.palette.table.header,
+                  color: theme.palette.table.text,
                   fontWeight: 700,
+                  borderBottom: `1px solid ${theme.palette.table.divider}`,
                 }}
               >
                 {col.label}
@@ -50,20 +117,24 @@ export function TableContent({ content, columns }: TableContentProps) {
           {content.map((row, i) => (
             <TableRow
               key={i}
-              hover
               sx={{
-                backgroundColor: i % 2 === 0 ? "#3c3c3cff" : "#333333ff",
-                "&:hover": { backgroundColor: "#333" },
+                backgroundColor:
+                  i % 2 === 0
+                    ? theme.palette.table.rowEven
+                    : theme.palette.table.rowOdd,
+                "&:hover": {
+                  backgroundColor: theme.palette.table.hover,
+                },
                 "& td": {
-                  color: "#d0d0d0",
-                  borderBottom: "1px solid #333",
+                  color: theme.palette.table.text,
+                  borderBottom: `1px solid ${theme.palette.table.divider}`,
                   padding: "10px 16px",
                 },
               }}
             >
               {columns.map((col) => (
                 <TableCell key={col.key}>
-                  {formatCell(objectToString(row[col.key]))}
+                  {formatCell(row[col.key])}
                 </TableCell>
               ))}
             </TableRow>
@@ -73,34 +144,3 @@ export function TableContent({ content, columns }: TableContentProps) {
     </TableContainer>
   );
 }
-
-function formatCell(value: any) {
-  if (!value) return "-";
-
-  if (value.length > 70) {
-    return value.slice(0, 70) + "...";
-  }
-
-  return value;
-}
-
-function objectToString(obj: any): string {
-  if (obj === null || obj === undefined) return "";
-  
-  if (typeof obj !== "object") return String(obj);
-
-  if (Array.isArray(obj)) {
-    return obj.map(objectToString).join(", ");
-  }
-
-  return Object.entries(obj)
-    .map(([key, value]) => {
-      if (typeof value === "object" && value !== null) {
-        return `${key}: { ${objectToString(value)} }`;
-      } else {
-        return `${key}: ${value}`;
-      }
-    })
-    .join("\n");
-}
-

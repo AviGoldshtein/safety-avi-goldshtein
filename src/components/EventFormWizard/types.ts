@@ -53,4 +53,5 @@ export interface FormData {
     results: string;
     injuriesLevel: string;
     eventDateTime: string;
+    eventTime: string;
 }
