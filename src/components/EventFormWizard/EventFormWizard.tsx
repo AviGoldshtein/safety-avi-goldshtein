@@ -1,0 +1,114 @@
+import { useState } from "react";
+import { Box, Stepper, Step, StepLabel, Button } from "@mui/material";
+import { useEventForm } from "../../hooks/useEventForm";
+import type { FormErrors } from "./types";
+
+import Step1BasicDetails from "./steps/Step1BasicDetails";
+import Step2Location from "./steps/Step2Location";
+import Step3Environmental from "./steps/Step3Environmental";
+import Step4AdditionalDetails from "./steps/Step4AdditionalDetails";
+import Step5DateAndResults from "./steps/Step5DateAndResults";
+
+const steps = [
+  "פרטי האירוע",
+  "מיקום האירוע",
+  "תנאים סביבתיים",
+  "פרטים משלימים",
+  "תאריך ותוצאות"
+];
+
+const stepFields: Record<number, string[]> = {
+  0: ["unitActivityType", "activityType", "category"],
+  1: ["location", "typeLocation", "inputLat", "inputLng", "currentLocation"],
+  2: ["weather"],
+  3: ["eventSeverity", "eventDescription", "subUnits"],
+  4: ["eventDateTime", "results", "injuriesLevel"]
+};
+
+export default function EventFormWizard() {
+  const { formData, errors, setErrors, handleSubmit, validateEventForm, updateField, takeCurrentLocation, resetForm } = useEventForm();
+  const [activeStep, setActiveStep] = useState(0);
+
+  const stepComponents = [
+    <Step1BasicDetails formData={formData} errors={errors} updateField={updateField} />,
+    <Step2Location formData={formData} errors={errors} updateField={updateField} takeCurrentLocation={takeCurrentLocation} />,
+    <Step3Environmental formData={formData} errors={errors} updateField={updateField} />,
+    <Step4AdditionalDetails formData={formData} errors={errors} updateField={updateField} />,
+    <Step5DateAndResults formData={formData} errors={errors} updateField={updateField} />
+  ];
+
+  function stepHasErrors(stepIndex: number) {
+    const fields = stepFields[stepIndex];
+    return fields.some(f => errors[f as keyof FormErrors]);
+  }
+
+  function validateCurrentStep(): FormErrors {
+    return validateEventForm(
+      formData,
+      stepFields[activeStep] as (keyof FormErrors)[]
+    );
+  }
+
+  function handleNext() {
+    const stepErrors = validateCurrentStep();
+    setErrors(stepErrors);
+
+    if (Object.keys(stepErrors).length > 0) return;
+
+    setActiveStep(prev => prev + 1);
+  }
+
+  function handleBack() {
+    setActiveStep(prev => prev - 1);
+  }
+
+  function handleFinalSubmit() {
+    const allErrors = validateEventForm(formData);
+    setErrors(allErrors);
+    
+    if (Object.keys(allErrors).length > 0) return;
+
+    handleSubmit((data) => {
+      console.log("Sending to server:", data);
+    });
+
+    resetForm();
+    setActiveStep(0);
+  }
+
+  return (
+    <Box
+        sx={{
+            p: 3,
+            minHeight: 700,
+            backgroundColor: "background.paper",
+            borderRadius: 2,
+            boxShadow: 3,
+            display: "flex",
+            flexDirection: "column"
+        }}>
+      <Stepper activeStep={activeStep} sx={{ mb: 3 }}>
+        {steps.map((label, i) => (
+          <Step key={label}>
+            <StepLabel error={stepHasErrors(i)}>
+              {label}
+            </StepLabel>
+          </Step>
+        ))}
+      </Stepper>
+
+      {stepComponents[activeStep]}
+
+      <Box sx={{ display: "flex", justifyContent: "space-between", mt: "auto" }}>
+        <Button disabled={activeStep === 0} onClick={handleBack}>חזור</Button>
+        {activeStep < steps.length - 1 ? (
+          <Button variant="contained" onClick={handleNext}>הבא</Button>
+        ) : (
+          <Button variant="contained" color="primary" onClick={handleFinalSubmit}>
+            שלח דיווח
+          </Button>
+        )}
+      </Box>
+    </Box>
+  );
+}

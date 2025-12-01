@@ -27,6 +27,7 @@ export interface FormErrors {
     results?: string;
     eventDateTime?: string;
     injuriesLevel?: string;
+    weather?: string;
 }
 export interface Location {
     lat: number;
@@ -43,7 +44,8 @@ export interface FormData {
     inputLat: string;
     inputLng: string;
     stringLoc: string;
-    currentLocation: Location | null;
+    currentLocation: Location;
+    weather: string;
 
     eventDescription: string;
     subUnits: string;

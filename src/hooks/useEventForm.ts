@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { validateEventForm } from "../utiles/validateEventForm";
-import type { FormData, FormErrors } from "../components/EventForm/types";
+import type { FormData, FormErrors } from "../components/EventFormWizard/types";
 
 export function useEventForm() {
 
-    const [errors, setErrors] = useState<FormErrors>({});
-    const [formData, setFormData] = useState<FormData>({
+    const initialState: FormData = {
         unitActivityType: "",
         activityType: "",
         category: "",
@@ -15,7 +14,8 @@ export function useEventForm() {
         inputLat: "",
         inputLng: "",
         stringLoc: "",
-        currentLocation: null,
+        currentLocation: {lng: 0, lat: 0},
+        weather: "",
 
         eventDescription: "",
         subUnits: "",
@@ -23,7 +23,10 @@ export function useEventForm() {
         results: "",
         injuriesLevel: "",
         eventDateTime: "",
-    });
+    }
+
+    const [errors, setErrors] = useState<FormErrors>({});
+    const [formData, setFormData] = useState<FormData>(initialState);
 
     function updateField<K extends keyof FormData>(key: K, value: FormData[K]) {
         setFormData(prev => ({ ...prev, [key]: value }));
@@ -52,25 +55,23 @@ export function useEventForm() {
     }
 
     function resetForm(){
-        setFormData({
-            unitActivityType: "",
-            activityType: "",
-            category: "",
-            location: "",
+        setFormData(initialState);
+        setErrors({});
+    }
 
-            typeLocation: "",
+    function buildPayload(formData: FormData) {
+        if (formData.typeLocation === "לווין") return formData;
+
+        return {
+            ...formData,
+            currentLocation: {
+            lat: Number(formData.inputLat),
+            lng: Number(formData.inputLng),
+            },
             inputLat: "",
             inputLng: "",
             stringLoc: "",
-            currentLocation: null,
-
-            eventDescription: "",
-            subUnits: "",
-            eventSeverity: "",
-            results: "",
-            injuriesLevel: "",
-            eventDateTime: "",
-        });
+        };
     }
 
     function handleSubmit(callback: (data: FormData) => void) {
@@ -81,7 +82,7 @@ export function useEventForm() {
 
         callback(formData);
 
-        saveEventToLocalStorage(formData);
+        saveEventToLocalStorage(buildPayload(formData));
         
         resetForm();
     }
@@ -98,8 +99,11 @@ export function useEventForm() {
     return {
         formData,
         errors,
+        setErrors,
         updateField,
         takeCurrentLocation,
         handleSubmit,
+        validateEventForm,
+        resetForm
     };
 }

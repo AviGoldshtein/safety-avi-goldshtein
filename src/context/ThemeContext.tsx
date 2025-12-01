@@ -32,10 +32,14 @@ export function ThemeModeProvider({ children }: ThemeModeProviderProps) {
         palette: {
           mode,
           primary: {
-            main: mode === "light" ? "#1976d2" : "#0A1A3F",
+            main: mode === "light" ? "#1565c0" : "#08487dff",
+          },
+          secondary: {
+            main: mode === "light" ? "#d3e4fb" : "#01203a",
           },
           background: {
-            default: mode === "light" ? "#f5f5f5" : "#0b1220",
+            default: mode === "light" ? "#f3f6fb" : "#0d1524",
+            paper: mode === "light" ? "#ffffff" : "#1a2332",
           },
         },
 

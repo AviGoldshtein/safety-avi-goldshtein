@@ -59,7 +59,22 @@ const injuriesLevelArr = [
   "חלל",
 ] as const;
 
-const typeLocationArr = ["נצ", "לווין", "ידנית"] as const;
+export const weatherArr = [
+  "שרב/עומס חום",
+  "שלג",
+  "סופת חול",
+  "גשם",
+  "ערפל",
+  "התקרחות",
+  "ברד",
+  "מעונן",
+  "נאה",
+  "רוח",
+  "ים סוער",
+  "מים שקטים",
+] as const;
+
+const typeLocationArr = ["נצ", "לווין"] as const;
 
 
 const options = {
@@ -70,7 +85,8 @@ const options = {
   eventSeverityArr,
   resultsArr,
   injuriesLevelArr,
-  typeLocationArr
+  typeLocationArr,
+  weatherArr
 };
 
 export default options;

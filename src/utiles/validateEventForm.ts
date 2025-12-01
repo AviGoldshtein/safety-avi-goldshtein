@@ -1,5 +1,4 @@
-// validateEventForm.ts
-import type { FormErrors, Location } from "../components/EventForm/types";
+import type { FormErrors, Location } from "../components/EventFormWizard/types";
 
 interface ValidationArgs {
   unitActivityType: string;
@@ -12,6 +11,7 @@ interface ValidationArgs {
   inputLng: string;
   stringLoc: string;
   currentLocation: Location | null;
+  weather: string;
 
   eventDescription: string;
   subUnits: string;
@@ -78,6 +78,16 @@ export function validateLocationFields({
   return errors;
 }
 
+export function validateEnvironmentalSection({ weather }: ValidationArgs) {
+  const errors: FormErrors = {};
+
+  if (!weather || (Array.isArray(weather) && weather.length === 0)) {
+    errors.weather = "יש לבחור לפחות תנאי מזג אוויר אחד";
+  }
+
+  return errors;
+}
+
 export function validateEventDetails({
   eventDescription,
   subUnits,
@@ -136,12 +146,27 @@ export function validateDateTime({ eventDateTime }: ValidationArgs) {
   return errors;
 }
 
-export function validateEventForm(values: ValidationArgs): FormErrors {
-  return {
+export function validateEventForm(
+  values: ValidationArgs,
+  checkFields: (keyof FormErrors)[] | null = null
+): FormErrors {
+  
+  const errors: FormErrors = {
     ...validateBasicFields(values),
     ...validateLocationFields(values),
     ...validateEventDetails(values),
+    ...validateEnvironmentalSection(values),
     ...validateResultsSection(values),
     ...validateDateTime(values),
   };
+
+  if (!checkFields) return errors;
+
+  const filtered: FormErrors = {};
+  checkFields.forEach((field) => {
+    if (errors[field]) filtered[field] = errors[field];
+  });
+
+  return filtered;
 }
+
