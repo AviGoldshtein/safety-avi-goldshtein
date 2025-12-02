@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import { TableContent } from "./TableContent";
 import { TableFilters } from "./TableFilters";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import type { FormData } from "../EventFormWizard/types";
 import { useEvents } from "../../context/EventsContext";
 
@@ -34,14 +34,8 @@ export function OverViewContent() {
   const [sortKey, setSortKey] = useState<keyof FormData | null>(null);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
-  const filteredColumns = useMemo(
-    () => columns.filter((col) => !selectedFilters.includes(col.key)),
-    [selectedFilters]
-  );
-
   function handleSort(key: keyof FormData) {
     if (sortKey === key) {
-      // הופכים את כיוון המיון
       setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"));
     } else {
       setSortKey(key);
@@ -49,11 +43,14 @@ export function OverViewContent() {
     }
   }
 
+  const filteredColumns = useMemo(
+    () => columns.filter((col) => !selectedFilters.includes(col.key)),
+    [selectedFilters]
+  );
+
   const dateFilteredContent = useMemo(() => {
     return events.filter((item) => {
-      const eventDate = item.eventDateTime
-        ? new Date(item.eventDateTime)
-        : null;
+      const eventDate = item.eventDateTime ? new Date(item.eventDateTime) : null;
       if (!eventDate) return false;
 
       if (fromDate) {
@@ -70,10 +67,24 @@ export function OverViewContent() {
     });
   }, [events, fromDate, toDate]);
 
-  const sortedContent = useMemo(() => {
-    if (!sortKey) return dateFilteredContent;
+  const searchFilteredContent = useMemo(() => {
+    if (!search.trim()) return dateFilteredContent;
 
-    return [...dateFilteredContent].sort((a, b) => {
+    const lower = search.toLowerCase();
+
+    return dateFilteredContent.filter(item =>
+      filteredColumns.some(col => {
+        const value = item[col.key];
+        if (value == null) return false;
+        return String(value).toLowerCase().includes(lower);
+      })
+    );
+  }, [search, dateFilteredContent, filteredColumns]);
+
+  const sortedContent = useMemo(() => {
+    if (!sortKey) return searchFilteredContent;
+
+    return [...searchFilteredContent].sort((a, b) => {
       const valueA = a[sortKey] ?? "";
       const valueB = b[sortKey] ?? "";
 
@@ -85,7 +96,7 @@ export function OverViewContent() {
         ? String(valueA).localeCompare(String(valueB))
         : String(valueB).localeCompare(String(valueA));
     });
-  }, [dateFilteredContent, sortKey, sortOrder]);
+  }, [searchFilteredContent, sortKey, sortOrder]);
 
   return (
     <Box sx={{ p: 2, bgcolor: "background.paper", borderRadius: 2 }}>
