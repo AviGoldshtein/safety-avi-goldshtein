@@ -1,4 +1,5 @@
 import { useTheme } from "@mui/material/styles";
+import type { FormData } from "../EventFormWizard/types";
 import { UnfoldMore, ArrowUpward, ArrowDownward } from "@mui/icons-material";
 import {
   Table,
@@ -12,14 +13,14 @@ import {
 } from "@mui/material";
 
 interface Column {
-  key: string;
+  key: keyof FormData;
   label: string;
 }
 
 interface TableContentProps {
   content: any[];
   columns: Column[];
-  onSort: (key: string) => void;
+  onSort: (key: keyof FormData) => void;
   sortKey: string | null;
   sortOrder: "asc" | "desc";
 }

@@ -13,7 +13,13 @@ interface TableFiltersProps {
   setFilterAnchor: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
   search: string;
   setSearch: React.Dispatch<React.SetStateAction<string>>;
+  fromDate: string;
+  setFromDate: React.Dispatch<React.SetStateAction<string>>;
+  toDate: string;
+  setToDate: React.Dispatch<React.SetStateAction<string>>;
 }
+
+// TODO להוסיף כפתור איפוס פילטרים 
 
 export function TableFilters({
   columns,
@@ -22,7 +28,11 @@ export function TableFilters({
   filterAnchor,
   setFilterAnchor,
   search,
-  setSearch
+  setSearch,
+  fromDate,
+  setFromDate,
+  toDate,
+  setToDate
 }: TableFiltersProps) {
 
   function toggleFilter(key: string) {
@@ -49,6 +59,24 @@ export function TableFilters({
         InputProps={{
           startAdornment: <Search sx={{ opacity: 0.6, mr: 1 }} />,
         }}
+      />
+
+      <TextField
+        label="מתאריך"
+        type="date"
+        size="small"
+        value={fromDate}
+        onChange={(e) => setFromDate(e.target.value)}
+        InputLabelProps={{ shrink: true }}
+      />
+      
+      <TextField
+        label="עד תאריך"
+        type="date"
+        size="small"
+        value={toDate}
+        onChange={(e) => setToDate(e.target.value)}
+        InputLabelProps={{ shrink: true }}
       />
 
       <IconButton onClick={openFilters}>

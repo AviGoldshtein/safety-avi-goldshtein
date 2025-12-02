@@ -2,12 +2,14 @@ import { Box } from "@mui/material";
 import { TableContent } from "./TableContent";
 import { TableFilters } from "./TableFilters";
 import { useState, useMemo } from "react";
+import type { FormData } from "../EventFormWizard/types";
 
 export function OverViewContent() {
+  const content: FormData[] = JSON.parse(
+    localStorage.getItem("eventsList") || "[]"
+  );
 
-  const content = JSON.parse(localStorage.getItem("eventsList") || "[]");
-
-  const columns = [
+  const columns: { key: keyof FormData; label: string }[] = [
     { key: "unitActivityType", label: "יחידה" },
     { key: "activityType", label: "פעילות" },
     { key: "category", label: "תחום" },
@@ -20,53 +22,74 @@ export function OverViewContent() {
     { key: "eventDateTime", label: "תאריך" },
     { key: "eventTime", label: "שעה" },
     { key: "results", label: "תוצאות" },
-    { key: "injuriesLevel", label: "פגיעות" }
+    { key: "injuriesLevel", label: "פגיעות" },
   ];
-
-// TODO להוסיף סינון מתאריך עד תאריך
 
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
   const [filterAnchor, setFilterAnchor] = useState<HTMLElement | null>(null);
   const [search, setSearch] = useState("");
 
-  const [sortKey, setSortKey] = useState<string | null>(null);
+  const [fromDate, setFromDate] = useState<string>("");
+  const [toDate, setToDate] = useState<string>("");
+
+  const [sortKey, setSortKey] = useState<keyof FormData | null>(null);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
   const filteredColumns = useMemo(
-    () => columns.filter(col => !selectedFilters.includes(col.key)),
+    () => columns.filter((col) => !selectedFilters.includes(col.key)),
     [selectedFilters]
   );
 
-    function handleSort(key: string) {
-        if (sortKey === key) {
-            // הופכים את כיוון המיון
-            setSortOrder(prev => (prev === "asc" ? "desc" : "asc"));
-        } else {
-            setSortKey(key);
-            setSortOrder("asc");
-        }
+  function handleSort(key: keyof FormData) {
+    if (sortKey === key) {
+      // הופכים את כיוון המיון
+      setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"));
+    } else {
+      setSortKey(key);
+      setSortOrder("asc");
     }
+  }
 
-    const sortedContent = useMemo(() => {
-        if (!sortKey) return content;
+  const dateFilteredContent = useMemo(() => {
+    return content.filter((item) => {
+      const eventDate = item.eventDateTime
+        ? new Date(item.eventDateTime)
+        : null;
+      if (!eventDate) return false;
 
-        return [...content].sort((a, b) => {
-            const valueA = a[sortKey] ?? "";
-            const valueB = b[sortKey] ?? "";
+      if (fromDate) {
+        const from = new Date(fromDate);
+        if (eventDate < from) return false;
+      }
 
-            if (typeof valueA === "number" && typeof valueB === "number") {
-                return sortOrder === "asc" ? valueA - valueB : valueB - valueA;
-            }
+      if (toDate) {
+        const to = new Date(toDate);
+        if (eventDate > to) return false;
+      }
 
-            return sortOrder === "asc"
-                ? String(valueA).localeCompare(String(valueB))
-                : String(valueB).localeCompare(String(valueA));
-        });
+      return true;
+    });
+  }, [content, fromDate, toDate]);
 
-    }, [content, sortKey, sortOrder]);
+  const sortedContent = useMemo(() => {
+    if (!sortKey) return dateFilteredContent;
+
+    return [...dateFilteredContent].sort((a, b) => {
+      const valueA = a[sortKey] ?? "";
+      const valueB = b[sortKey] ?? "";
+
+      if (typeof valueA === "number" && typeof valueB === "number") {
+        return sortOrder === "asc" ? valueA - valueB : valueB - valueA;
+      }
+
+      return sortOrder === "asc"
+        ? String(valueA).localeCompare(String(valueB))
+        : String(valueB).localeCompare(String(valueA));
+    });
+  }, [dateFilteredContent, sortKey, sortOrder]);
 
   return (
-    <Box sx={{ p: 2, bgcolor: 'background.paper', borderRadius: 2 }}>
+    <Box sx={{ p: 2, bgcolor: "background.paper", borderRadius: 2 }}>
       <h1>רשימת אירועים</h1>
 
       <TableFilters
@@ -77,6 +100,10 @@ export function OverViewContent() {
         setFilterAnchor={setFilterAnchor}
         search={search}
         setSearch={setSearch}
+        fromDate={fromDate}
+        toDate={toDate}
+        setFromDate={setFromDate}
+        setToDate={setToDate}
       />
 
       <TableContent
