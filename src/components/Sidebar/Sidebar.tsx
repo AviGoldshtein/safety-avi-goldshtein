@@ -2,7 +2,11 @@ import { Box, Paper, List, ListItemButton, ListItemText, Button } from "@mui/mat
 import { Link } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 
-export default function Sidebar() {
+interface SidebarProps {
+  open: boolean;
+}
+
+export default function Sidebar({ open }: SidebarProps) {
   const theme = useTheme();
 
   return (
@@ -11,9 +15,10 @@ export default function Sidebar() {
         position: "fixed",
         top: "84px",
         bottom: "80px",
-        right: 0,
+        right: open ? 0 : "-220px",   // סגירה ופתיחה
         width: "220px",
         zIndex: 1200,
+        transition: "right 0.3s ease",
       }}
     >
       <Paper
@@ -31,19 +36,19 @@ export default function Sidebar() {
         }}
       >
         <List sx={{ display: "flex", flexDirection: "column", gap: "15px" }}>
-          <ListItemButton component={Link} to="/over-view" sx={{borderRadius: 1}}>
+          <ListItemButton component={Link} to="/over-view" sx={{ borderRadius: 1 }}>
             <ListItemText primary="מבט על" sx={{ textAlign: "right" }} />
           </ListItemButton>
 
-          <ListItemButton component={Link} to="/" sx={{borderRadius: 1}}>
+          <ListItemButton component={Link} to="/" sx={{ borderRadius: 1 }}>
             <ListItemText primary="הזנת אירוע" sx={{ textAlign: "right" }} />
           </ListItemButton>
 
-          <ListItemButton component={Link} to="/development" sx={{borderRadius: 1}}>
+          <ListItemButton component={Link} to="/development" sx={{ borderRadius: 1 }}>
             <ListItemText primary="חיפוש אירועים" sx={{ textAlign: "right" }} />
           </ListItemButton>
 
-          <ListItemButton component={Link} to="/development" sx={{borderRadius: 1}}>
+          <ListItemButton component={Link} to="/development" sx={{ borderRadius: 1 }}>
             <ListItemText primary="דוחות BI" sx={{ textAlign: "right" }} />
           </ListItemButton>
         </List>
