@@ -1,13 +1,12 @@
 import { Box } from "@mui/material";
 import { TableContent } from "./TableContent";
 import { TableFilters } from "./TableFilters";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import type { FormData } from "../EventFormWizard/types";
+import { useEvents } from "../../context/EventsContext";
 
 export function OverViewContent() {
-  const content: FormData[] = JSON.parse(
-    localStorage.getItem("eventsList") || "[]"
-  );
+  const { events } = useEvents()
 
   const columns: { key: keyof FormData; label: string }[] = [
     { key: "eventDateTime", label: "תאריך" },
@@ -51,7 +50,7 @@ export function OverViewContent() {
   }
 
   const dateFilteredContent = useMemo(() => {
-    return content.filter((item) => {
+    return events.filter((item) => {
       const eventDate = item.eventDateTime
         ? new Date(item.eventDateTime)
         : null;
@@ -69,7 +68,7 @@ export function OverViewContent() {
 
       return true;
     });
-  }, [content, fromDate, toDate]);
+  }, [events, fromDate, toDate]);
 
   const sortedContent = useMemo(() => {
     if (!sortKey) return dateFilteredContent;

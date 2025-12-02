@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { validateEventForm } from "../utiles/validateEventForm";
+import { useEvents } from "../context/EventsContext";
 import type { FormData, FormErrors } from "../components/EventFormWizard/types";
 
 export function useEventForm() {
+    const { setEvents } = useEvents()
 
     const initialState: FormData = {
         unitActivityType: "",
@@ -86,6 +88,8 @@ export function useEventForm() {
         callback(formData);
 
         saveEventToLocalStorage(buildPayload(formData));
+
+        setEvents(prev => [...prev, formData]);
         
         resetForm();
     }
