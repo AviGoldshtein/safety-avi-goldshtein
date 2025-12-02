@@ -1,6 +1,6 @@
 import { useTheme } from "@mui/material/styles";
 import type { FormData } from "../EventFormWizard/types";
-import { UnfoldMore, ArrowUpward, ArrowDownward } from "@mui/icons-material";
+import { UnfoldMore, ArrowUpward, ArrowDownward, StackedBarChart } from "@mui/icons-material";
 import {
   Table,
   TableBody,
@@ -79,6 +79,8 @@ export function TableContent({ content, columns, onSort, sortKey, sortOrder }: T
     <TableContainer
       component={Paper}
       sx={{
+        minWidth: 800,
+        minHeight: 300,
         backgroundColor: theme.palette.table.rowEven,
         maxHeight: 500,
         borderRadius: "7px",
@@ -134,7 +136,7 @@ export function TableContent({ content, columns, onSort, sortKey, sortOrder }: T
           </TableRow>
         </TableHead>
 
-        <TableBody>
+        <TableBody >
           {content.map((row, i) => (
             <TableRow
               key={i}
@@ -161,6 +163,25 @@ export function TableContent({ content, columns, onSort, sortKey, sortOrder }: T
             </TableRow>
           ))}
         </TableBody>
+        {!content.length && (
+          <TableBody>
+            <TableRow>
+              <TableCell
+                colSpan={columns.length}
+                sx={{
+                  textAlign: "center",
+                  padding: "20px",
+                  color: theme.palette.table.text,
+                }}
+              >
+                <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 1.5 }}>
+                  לא נמצאו נתונים להצגה
+                  <StackedBarChart />
+                </Box>
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        )}
       </Table>
     </TableContainer>
   );

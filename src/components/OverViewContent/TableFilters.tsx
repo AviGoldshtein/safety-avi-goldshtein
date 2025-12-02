@@ -1,4 +1,4 @@
-import { Box, TextField, Chip, IconButton, Menu, MenuItem } from "@mui/material";
+import { Box, TextField, Chip, IconButton, Menu, MenuItem, Button } from "@mui/material";
 import { Search, FilterList } from "@mui/icons-material"
 
 interface TableColumn {
@@ -18,8 +18,6 @@ interface TableFiltersProps {
   toDate: string;
   setToDate: React.Dispatch<React.SetStateAction<string>>;
 }
-
-// TODO להוסיף כפתור איפוס פילטרים 
 
 export function TableFilters({
   columns,
@@ -83,6 +81,20 @@ export function TableFilters({
         <FilterList />
       </IconButton>
 
+      <Button
+        variant="contained"
+        color="secondary"
+        size="small"
+        onClick={() => {
+          setSearch("");
+          setFromDate("");
+          setToDate("");
+          setSelectedFilters(["eventDescription", "currentLocation", "subUnits"]);
+        }}
+      >
+        איפוס פילטרים
+      </Button>
+
       <Menu
         anchorEl={filterAnchor}
         open={Boolean(filterAnchor)}
@@ -92,7 +104,7 @@ export function TableFilters({
           <MenuItem key={col.key} onClick={() => toggleFilter(col.key)}>
             <Chip
               label={col.label}
-              color={selectedFilters.includes(col.key) ? "primary" : "default"}
+              color={selectedFilters.includes(col.key) ? "default" : "primary"}
               size="small"
             />
           </MenuItem>
