@@ -3,6 +3,7 @@ import FormField from "../../FormField/FormField";
 import CustomSelect from "../../CustomSelect/CustomSelect";
 import options from "../../../data/options";
 import type { Step3Props } from "./stepTypes";
+import UmbrellaIcon from "@mui/icons-material/Umbrella";
 
 export default function Step3Environmental({ formData, errors, updateField }: Step3Props) {
 
@@ -13,6 +14,7 @@ export default function Step3Environmental({ formData, errors, updateField }: St
           options={options.weatherArr}
           value={formData.weather}
           onChange={(val) => updateField("weather", val)}
+          icon={ <UmbrellaIcon fontSize="small" />}
         />
       </FormField>
     </Box>

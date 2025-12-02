@@ -3,6 +3,7 @@ import FormField from "../../FormField/FormField";
 import RadioGroup from "../../RadioGroup/RadioGroup";
 import options from "../../../data/options";
 import type { Step4Props } from "./stepTypes";
+import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
 
 
 export default function Step4AdditionalDetails({ formData, errors, updateField }: Step4Props) {
@@ -15,6 +16,7 @@ export default function Step4AdditionalDetails({ formData, errors, updateField }
           value={formData.eventSeverity}
           onChange={(val) => updateField("eventSeverity", val)}
           name="eventSeverity"
+          icon={<PriorityHighIcon fontSize="large" />}
         />
       </FormField>
 

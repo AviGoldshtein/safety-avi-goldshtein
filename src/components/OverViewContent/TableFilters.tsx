@@ -1,5 +1,5 @@
 import { Box, TextField, Chip, IconButton, Menu, MenuItem, Button } from "@mui/material";
-import { Search, FilterList } from "@mui/icons-material"
+import { Search, FilterList, RestartAlt } from "@mui/icons-material"
 
 interface TableColumn {
   key: string;
@@ -85,6 +85,7 @@ export function TableFilters({
         variant="contained"
         color="secondary"
         size="small"
+        startIcon={<RestartAlt sx={{ml: 2}} />}
         onClick={() => {
           setSearch("");
           setFromDate("");

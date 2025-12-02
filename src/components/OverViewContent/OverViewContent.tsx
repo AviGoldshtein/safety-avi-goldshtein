@@ -1,9 +1,10 @@
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { TableContent } from "./TableContent";
 import { TableFilters } from "./TableFilters";
 import { useState, useMemo } from "react";
 import type { FormData } from "../EventFormWizard/types";
 import { useEvents } from "../../context/EventsContext";
+import EventNoteIcon from "@mui/icons-material/EventNote";
 
 export function OverViewContent() {
   const { events } = useEvents()
@@ -100,7 +101,10 @@ export function OverViewContent() {
 
   return (
     <Box sx={{ p: 2, bgcolor: "background.paper", borderRadius: 2 }}>
-      <h1>רשימת אירועים</h1>
+      <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}>
+        <EventNoteIcon fontSize="large" />
+        <Typography variant="h5">רשימת אירועים</Typography>
+      </Box>
 
       <TableFilters
         columns={columns}

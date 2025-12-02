@@ -1,9 +1,10 @@
-import { Box, Button, Typography, TextField } from "@mui/material";
+import { Box, Button, Typography, TextField, InputAdornment } from "@mui/material";
 import FormField from "../../FormField/FormField";
 import RadioGroup from "../../RadioGroup/RadioGroup";
 import options from "../../../data/options";
 import { LOCATION_CIVIL } from "../../../constants/eventConstants";
 import type { Step2Props } from "./stepTypes";
+import { LocationOn, GpsFixed, PersonPinCircle, PinDrop, Straighten, Height } from "@mui/icons-material"
 
 
 export default function Step2Location({ formData, errors, updateField, takeCurrentLocation }: Step2Props) {
@@ -16,6 +17,7 @@ export default function Step2Location({ formData, errors, updateField, takeCurre
           value={formData.location}
           onChange={(val) => updateField("location", val)}
           name="location"
+          icon={<LocationOn fontSize="large" />}
         />
       </FormField>
 
@@ -27,6 +29,7 @@ export default function Step2Location({ formData, errors, updateField, takeCurre
               value={formData.typeLocation}
               onChange={(val) => updateField("typeLocation", val)}
               name="typeLocation"
+              icon={<PinDrop fontSize="large" />}
             />
           </FormField>
 
@@ -39,6 +42,13 @@ export default function Step2Location({ formData, errors, updateField, takeCurre
                     value={formData.inputLng}
                     onChange={(e) => updateField("inputLng", e.target.value)}
                     size="small"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <Straighten fontSize="small" />
+                        </InputAdornment>
+                      ),
+                    }}
                 />
               </FormField>
 
@@ -49,6 +59,13 @@ export default function Step2Location({ formData, errors, updateField, takeCurre
                     value={formData.inputLat}
                     onChange={(e) => updateField("inputLat", e.target.value)}
                     size="small"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <Height fontSize="small" />
+                        </InputAdornment>
+                      ),
+                    }}
                 />
               </FormField>
             </Box>
@@ -61,12 +78,16 @@ export default function Step2Location({ formData, errors, updateField, takeCurre
                 sx={{ bgcolor: "secondary", borderRadius: 2, mt: 1 }}
                 onClick={takeCurrentLocation}
               >
+                <GpsFixed fontSize="small" sx={{ml: 1}} />
                 קח מיקום עכשיו
               </Button>
 
               {formData.currentLocation && (
                 <Box sx={{ mt: 1, textAlign: "center" }}>
-                  <Typography variant="body2">המיקום שנבחר:</Typography>
+                  <Typography variant="body2" sx={{display: "flex", justifyContent: "center", alignItems: "center", padding: 0.5}}>
+                    <PersonPinCircle fontSize="small" />
+                    המיקום שנבחר:
+                  </Typography>
                   <Typography sx={{bgcolor: "secondary.main", borderRadius: 1, margin: 0.1}} variant="body2">
                     אורך: {formData.currentLocation.lng}
                   </Typography>

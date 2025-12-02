@@ -1,10 +1,12 @@
 import { Box, Paper, List, ListItemButton, ListItemText, Button } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
+import { Dashboard, EventNote, Search, BarChart } from "@mui/icons-material"
 
 interface SidebarProps {
   open: boolean;
 }
+
 
 export default function Sidebar({ open }: SidebarProps) {
   const theme = useTheme();
@@ -37,18 +39,22 @@ export default function Sidebar({ open }: SidebarProps) {
       >
         <List sx={{ display: "flex", flexDirection: "column", gap: "15px" }}>
           <ListItemButton component={Link} to="/over-view" sx={{ borderRadius: 1 }}>
+            <Dashboard sx={{ ml: 1 }} />
             <ListItemText primary="מבט על" sx={{ textAlign: "right" }} />
           </ListItemButton>
 
           <ListItemButton component={Link} to="/" sx={{ borderRadius: 1 }}>
+            <EventNote sx={{ ml: 1 }} />
             <ListItemText primary="הזנת אירוע" sx={{ textAlign: "right" }} />
           </ListItemButton>
 
           <ListItemButton component={Link} to="/development" sx={{ borderRadius: 1 }}>
+            <Search sx={{ ml: 1 }} />
             <ListItemText primary="חיפוש אירועים" sx={{ textAlign: "right" }} />
           </ListItemButton>
 
           <ListItemButton component={Link} to="/development" sx={{ borderRadius: 1 }}>
+            <BarChart sx={{ ml: 1 }} />
             <ListItemText primary="דוחות BI" sx={{ textAlign: "right" }} />
           </ListItemButton>
         </List>
