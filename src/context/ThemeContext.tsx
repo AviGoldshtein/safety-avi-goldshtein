@@ -39,7 +39,7 @@ export function ThemeModeProvider({ children }: ThemeModeProviderProps) {
           },
           background: {
             default: mode === "light" ? "#f3f6fb" : "#0d1524",
-            paper: mode === "light" ? "#ffffff" : "#1a2332",
+            paper: mode === "light" ? "#e7e9ef" : "#293041",
           },
           table: {
             header: mode === "light" ? "#3a3f47" : "#1f2937",
@@ -48,6 +48,7 @@ export function ThemeModeProvider({ children }: ThemeModeProviderProps) {
             hover: mode === "light" ? "#4b525c" : "rgba(104, 104, 104, 0.05)",
             text: mode === "light" ? "#e5e7eb" : "#e5e7eb",
             divider: mode === "light" ? "#444c56" : "#3b4250",
+            border: mode === "light" ? "#8c96a4" : "#81899a",
           },
         },
 

@@ -23,14 +23,47 @@ export function OverViewContent() {
     { key: "injuriesLevel", label: "פגיעות" }
   ];
 
+// TODO להוסיף סינון מתאריך עד תאריך
+
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
   const [filterAnchor, setFilterAnchor] = useState<HTMLElement | null>(null);
   const [search, setSearch] = useState("");
+
+  const [sortKey, setSortKey] = useState<string | null>(null);
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
   const filteredColumns = useMemo(
     () => columns.filter(col => !selectedFilters.includes(col.key)),
     [selectedFilters]
   );
+
+    function handleSort(key: string) {
+        if (sortKey === key) {
+            // הופכים את כיוון המיון
+            setSortOrder(prev => (prev === "asc" ? "desc" : "asc"));
+        } else {
+            setSortKey(key);
+            setSortOrder("asc");
+        }
+    }
+
+    const sortedContent = useMemo(() => {
+        if (!sortKey) return content;
+
+        return [...content].sort((a, b) => {
+            const valueA = a[sortKey] ?? "";
+            const valueB = b[sortKey] ?? "";
+
+            if (typeof valueA === "number" && typeof valueB === "number") {
+                return sortOrder === "asc" ? valueA - valueB : valueB - valueA;
+            }
+
+            return sortOrder === "asc"
+                ? String(valueA).localeCompare(String(valueB))
+                : String(valueB).localeCompare(String(valueA));
+        });
+
+    }, [content, sortKey, sortOrder]);
 
   return (
     <Box sx={{ p: 2, bgcolor: 'background.paper', borderRadius: 2 }}>
@@ -47,8 +80,11 @@ export function OverViewContent() {
       />
 
       <TableContent
-        content={content}
+        content={sortedContent}
         columns={filteredColumns}
+        onSort={handleSort}
+        sortKey={sortKey}
+        sortOrder={sortOrder}
       />
     </Box>
   );

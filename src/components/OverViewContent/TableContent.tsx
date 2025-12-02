@@ -1,4 +1,5 @@
 import { useTheme } from "@mui/material/styles";
+import { UnfoldMore, ArrowUpward, ArrowDownward } from "@mui/icons-material";
 import {
   Table,
   TableBody,
@@ -7,6 +8,7 @@ import {
   TableHead,
   TableRow,
   Paper,
+  Box
 } from "@mui/material";
 
 interface Column {
@@ -17,9 +19,12 @@ interface Column {
 interface TableContentProps {
   content: any[];
   columns: Column[];
+  onSort: (key: string) => void;
+  sortKey: string | null;
+  sortOrder: "asc" | "desc";
 }
 
-export function TableContent({ content, columns }: TableContentProps) {
+export function TableContent({ content, columns, onSort, sortKey, sortOrder }: TableContentProps) {
     const theme = useTheme();
 
     function isIsoDate(value: string) {
@@ -76,6 +81,7 @@ export function TableContent({ content, columns }: TableContentProps) {
         backgroundColor: theme.palette.table.rowEven,
         maxHeight: 500,
         borderRadius: "7px",
+        border: `2px solid ${theme.palette.table.border}`,
 
         "&::-webkit-scrollbar": {
             width: "15px",
@@ -100,14 +106,28 @@ export function TableContent({ content, columns }: TableContentProps) {
             {columns.map((col) => (
               <TableCell
                 key={col.key}
+                onClick={() => onSort(col.key)}
                 sx={{
+                  cursor: "pointer",
+                  userSelect: "none",
                   backgroundColor: theme.palette.table.header,
                   color: theme.palette.table.text,
                   fontWeight: 700,
                   borderBottom: `1px solid ${theme.palette.table.divider}`,
                 }}
               >
-                {col.label}
+                <Box sx={{ display: "flex", alignItems: "center", justifyContent: "start", gap: 0.5 }}>
+                  {col.label}
+                  {sortKey === col.key ? (
+                    sortOrder === "asc" ? (
+                      <ArrowUpward fontSize="small" />
+                    ) : (
+                      <ArrowDownward fontSize="small" />
+                    )
+                  ) : (
+                    <UnfoldMore fontSize="small" sx={{ opacity: 0.5 }} />
+                  )}
+                </Box>
               </TableCell>
             ))}
           </TableRow>
@@ -133,7 +153,7 @@ export function TableContent({ content, columns }: TableContentProps) {
               }}
             >
               {columns.map((col) => (
-                <TableCell key={col.key}>
+                <TableCell key={col.key} sx={{maxWidth: 120, overflow: "hidden", textAlign: "right"}}>
                   {formatCell(row[col.key])}
                 </TableCell>
               ))}

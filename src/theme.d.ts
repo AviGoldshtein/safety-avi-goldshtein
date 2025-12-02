@@ -9,6 +9,7 @@ declare module "@mui/material/styles" {
       hover: string;
       text: string;
       divider: string;
+      border: string;
     };
   }
 
@@ -20,6 +21,7 @@ declare module "@mui/material/styles" {
       hover?: string;
       text?: string;
       divider?: string;
+      border?: string;
     };
   }
 }
