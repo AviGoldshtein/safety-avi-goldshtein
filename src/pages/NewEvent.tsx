@@ -2,7 +2,7 @@ import LayoutMain from "../layouts/LayoutMain"
 import EventFormWizard from "../components/EventFormWizard/EventFormWizard"
 
 
-export default function Home(){
+export default function NewEvent(){
     return(
         <div>
             <LayoutMain>
