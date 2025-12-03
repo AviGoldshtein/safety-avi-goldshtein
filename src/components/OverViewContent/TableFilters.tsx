@@ -86,7 +86,7 @@ export function TableFilters({
 
       <Button
         variant="contained"
-        color="secondary"
+        color="primary"
         size="small"
         startIcon={<RestartAlt sx={{ml: 2}} />}
         onClick={resetFilters}
