@@ -10,6 +10,7 @@ export default function Header() {
     position="fixed"
     sx={{
         backgroundColor: (theme) => theme.palette.primary.main,
+        borderRadius: "0 0 5px 5px"
     }}
     >
       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>

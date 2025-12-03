@@ -31,12 +31,18 @@ export default function EventFormWizard() {
   const { formData, errors, setErrors, handleSubmit, validateEventForm, updateField, takeCurrentLocation, resetForm } = useEventForm();
   const [activeStep, setActiveStep] = useState(0);
 
+  const sharedProps = {
+    formData,
+    errors,
+    updateField,
+  };
+
   const stepComponents = [
-    <Step1BasicDetails formData={formData} errors={errors} updateField={updateField} />,
-    <Step2Location formData={formData} errors={errors} updateField={updateField} takeCurrentLocation={takeCurrentLocation} />,
-    <Step3Environmental formData={formData} errors={errors} updateField={updateField} />,
-    <Step4AdditionalDetails formData={formData} errors={errors} updateField={updateField} />,
-    <Step5DateAndResults formData={formData} errors={errors} updateField={updateField} />
+    <Step1BasicDetails {...sharedProps} />,
+    <Step2Location {...sharedProps} takeCurrentLocation={takeCurrentLocation} />,
+    <Step3Environmental {...sharedProps} />,
+    <Step4AdditionalDetails {...sharedProps} />,
+    <Step5DateAndResults {...sharedProps} />
   ];
 
   function stepHasErrors(stepIndex: number) {
@@ -92,7 +98,7 @@ export default function EventFormWizard() {
       <Stepper activeStep={activeStep} sx={{ mb: 3 }}>
         {steps.map((label, i) => (
           <Step key={label}>
-            <StepLabel error={stepHasErrors(i)}>
+            <StepLabel error={stepHasErrors(i)} StepIconProps={{sx:{ ml: 1} }}>
               {label}
             </StepLabel>
           </Step>

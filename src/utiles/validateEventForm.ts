@@ -43,7 +43,6 @@ export function validateLocationFields({
   typeLocation,
   inputLat,
   inputLng,
-  stringLoc,
   currentLocation,
 }: ValidationArgs) {
   const errors: FormErrors = {};

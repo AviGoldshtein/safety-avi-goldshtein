@@ -3,7 +3,7 @@
   flex-direction: column;
   min-height: 100vh;
   padding-top: 64px;   /* גובה ההדר */
-  padding-bottom: 70px; /* גובה הפוטר */
+  /* padding-bottom: 70px; */
 }
 
 .contentWrapper {
