@@ -1,10 +1,11 @@
 import { Box, Typography } from "@mui/material";
 import { TableContent } from "./TableContent";
 import { TableFilters } from "./TableFilters";
-import { useState, useMemo } from "react";
+import { useMemo } from "react";
 import type { FormData } from "../EventFormWizard/types";
 import { useEvents } from "../../context/EventsContext";
 import EventNoteIcon from "@mui/icons-material/EventNote";
+import { useEventFilters } from "../../hooks/useEventFilters";
 
 export function OverViewContent() {
   const { events } = useEvents()
@@ -25,37 +26,12 @@ export function OverViewContent() {
     { key: "currentLocation", label: "קורדינטות" },
   ];
 
-  const initialFilteredColumns: string[] = ["eventDescription", "currentLocation", "subUnits"]
-
-  const [selectedFilters, setSelectedFilters] = useState<string[]>(initialFilteredColumns);
-  const [filterAnchor, setFilterAnchor] = useState<HTMLElement | null>(null);
-  const [search, setSearch] = useState("");
-
-  const [fromDate, setFromDate] = useState<string>("");
-  const [toDate, setToDate] = useState<string>("");
-
-  const [sortKey, setSortKey] = useState<keyof FormData | null>(null);
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
-
-  function handleSort(key: keyof FormData) {
-    if (sortKey === key) {
-      setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"));
-    } else {
-      setSortKey(key);
-      setSortOrder("asc");
-    }
-  }
-
-  function resetFilters(){
-    setSearch("");
-    setFromDate("");
-    setToDate("");
-    setSelectedFilters(initialFilteredColumns);
-  }
+  const initialHiddenColumns: string[] = ["eventDescription", "currentLocation", "subUnits"]
+  const filters = useEventFilters(initialHiddenColumns);
 
   const filteredColumns = useMemo(
-    () => columns.filter((col) => !selectedFilters.includes(col.key)),
-    [selectedFilters]
+    () => columns.filter((col) => !filters.hiddenColumns.includes(col.key)),
+    [filters.hiddenColumns]
   );
 
   const dateFilteredContent = useMemo(() => {
@@ -63,24 +39,24 @@ export function OverViewContent() {
       const eventDate = item.eventDateTime ? new Date(item.eventDateTime) : null;
       if (!eventDate) return false;
 
-      if (fromDate) {
-        const from = new Date(fromDate);
+      if (filters.fromDate) {
+        const from = new Date(filters.fromDate);
         if (eventDate < from) return false;
       }
 
-      if (toDate) {
-        const to = new Date(toDate);
+      if (filters.toDate) {
+        const to = new Date(filters.toDate);
         if (eventDate > to) return false;
       }
 
       return true;
     });
-  }, [events, fromDate, toDate]);
+  }, [events, filters.fromDate, filters.toDate]);
 
   const searchFilteredContent = useMemo(() => {
-    if (!search.trim()) return dateFilteredContent;
+    if (!filters.search.trim()) return dateFilteredContent;
 
-    const lower = search.toLowerCase();
+    const lower = filters.search.toLowerCase();
 
     return dateFilteredContent.filter(item =>
       filteredColumns.some(col => {
@@ -89,24 +65,26 @@ export function OverViewContent() {
         return String(value).toLowerCase().includes(lower);
       })
     );
-  }, [search, dateFilteredContent, filteredColumns]);
+  }, [filters.search, dateFilteredContent, filteredColumns]);
 
   const sortedContent = useMemo(() => {
-    if (!sortKey) return searchFilteredContent;
+    if (!filters.sortKey) return searchFilteredContent;
+
+    const key = filters.sortKey;
 
     return [...searchFilteredContent].sort((a, b) => {
-      const valueA = a[sortKey] ?? "";
-      const valueB = b[sortKey] ?? "";
+      const valueA = a[key] ?? "";
+      const valueB = b[key] ?? "";
 
       if (typeof valueA === "number" && typeof valueB === "number") {
-        return sortOrder === "asc" ? valueA - valueB : valueB - valueA;
+        return filters.sortOrder === "asc" ? valueA - valueB : valueB - valueA;
       }
 
-      return sortOrder === "asc"
+      return filters.sortOrder === "asc"
         ? String(valueA).localeCompare(String(valueB))
         : String(valueB).localeCompare(String(valueA));
     });
-  }, [searchFilteredContent, sortKey, sortOrder]);
+  }, [searchFilteredContent, filters.sortKey, filters.sortOrder]);
 
   return (
     <Box sx={{ p: 2, bgcolor: "background.paper", borderRadius: 2 }}>
@@ -115,27 +93,12 @@ export function OverViewContent() {
         <Typography variant="h5">רשימת אירועים</Typography>
       </Box>
 
-      <TableFilters
-        columns={columns}
-        selectedFilters={selectedFilters}
-        setSelectedFilters={setSelectedFilters}
-        filterAnchor={filterAnchor}
-        setFilterAnchor={setFilterAnchor}
-        search={search}
-        setSearch={setSearch}
-        fromDate={fromDate}
-        toDate={toDate}
-        setFromDate={setFromDate}
-        setToDate={setToDate}
-        resetFilters={resetFilters}
-      />
+      <TableFilters columns={columns} {...filters} />
 
       <TableContent
         content={sortedContent}
         columns={filteredColumns}
-        onSort={handleSort}
-        sortKey={sortKey}
-        sortOrder={sortOrder}
+        {...filters}
       />
     </Box>
   );

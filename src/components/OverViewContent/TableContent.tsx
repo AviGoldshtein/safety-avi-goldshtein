@@ -20,12 +20,12 @@ interface Column {
 interface TableContentProps {
   content: any[];
   columns: Column[];
-  onSort: (key: keyof FormData) => void;
+  handleSort: (key: keyof FormData) => void;
   sortKey: string | null;
   sortOrder: "asc" | "desc";
 }
 
-export function TableContent({ content, columns, onSort, sortKey, sortOrder }: TableContentProps) {
+export function TableContent({ content, columns, handleSort, sortKey, sortOrder }: TableContentProps) {
     const theme = useTheme();
 
     function isIsoDate(value: string) {
@@ -109,7 +109,7 @@ export function TableContent({ content, columns, onSort, sortKey, sortOrder }: T
             {columns.map((col) => (
               <TableCell
                 key={col.key}
-                onClick={() => onSort(col.key)}
+                onClick={() => handleSort(col.key)}
                 sx={{
                   cursor: "pointer",
                   userSelect: "none",

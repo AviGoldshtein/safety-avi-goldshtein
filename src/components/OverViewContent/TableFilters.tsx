@@ -7,10 +7,10 @@ interface TableColumn {
 }
 interface TableFiltersProps {
   columns: TableColumn[];
-  selectedFilters: string[];
-  setSelectedFilters: React.Dispatch<React.SetStateAction<string[]>>;
-  filterAnchor: HTMLElement | null;
-  setFilterAnchor: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
+  hiddenColumns: string[];
+  setHiddenColumns: React.Dispatch<React.SetStateAction<string[]>>;
+  anchor: HTMLElement | null;
+  setAnchor: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
   search: string;
   setSearch: React.Dispatch<React.SetStateAction<string>>;
   fromDate: string;
@@ -22,10 +22,10 @@ interface TableFiltersProps {
 
 export function TableFilters({
   columns,
-  selectedFilters,
-  setSelectedFilters,
-  filterAnchor,
-  setFilterAnchor,
+  hiddenColumns,
+  setHiddenColumns,
+  anchor,
+  setAnchor,
   search,
   setSearch,
   fromDate,
@@ -35,8 +35,8 @@ export function TableFilters({
   resetFilters
 }: TableFiltersProps) {
 
-  function toggleFilter(key: string) {
-    setSelectedFilters(prev =>
+  function toggleColumnsVisibility(key: string) {
+    setHiddenColumns(prev =>
       prev.includes(key)
         ? prev.filter(f => f !== key)
         : [...prev, key]
@@ -44,10 +44,10 @@ export function TableFilters({
   }
 
   const openFilters = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setFilterAnchor(e.currentTarget);
+    setAnchor(e.currentTarget);
   };
 
-  const closeFilters = () => setFilterAnchor(null);
+  const closeFilters = () => setAnchor(null);
 
   return (
     <Box sx={{ mb: 2, display: "flex", gap: 2, alignItems: "center" }}>
@@ -94,15 +94,15 @@ export function TableFilters({
       </Button>
 
       <Menu
-        anchorEl={filterAnchor}
-        open={Boolean(filterAnchor)}
+        anchorEl={anchor}
+        open={Boolean(anchor)}
         onClose={closeFilters}
       >
         {columns.map(col => (
-          <MenuItem key={col.key} onClick={() => toggleFilter(col.key)}>
+          <MenuItem key={col.key} onClick={() => toggleColumnsVisibility(col.key)}>
             <Chip
               label={col.label}
-              color={selectedFilters.includes(col.key) ? "default" : "primary"}
+              color={hiddenColumns.includes(col.key) ? "default" : "primary"}
               size="small"
             />
           </MenuItem>
