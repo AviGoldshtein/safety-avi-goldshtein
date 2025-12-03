@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Box, Stepper, Step, StepLabel, Button } from "@mui/material";
 import { useEventForm } from "../../hooks/useEventForm";
 import type { FormErrors } from "./types";
+import SendIcon from "@mui/icons-material/Send";
 
 import Step1BasicDetails from "./steps/Step1BasicDetails";
 import Step2Location from "./steps/Step2Location";
@@ -100,12 +101,12 @@ export default function EventFormWizard() {
       {stepComponents[activeStep]}
 
       <Box sx={{ display: "flex", justifyContent: "space-between", mt: "auto" }}>
-        <Button disabled={activeStep === 0} onClick={handleBack}>חזור</Button>
+        <Button variant="contained" disabled={activeStep === 0} onClick={handleBack}>חזור</Button>
         {activeStep < steps.length - 1 ? (
           <Button variant="contained" onClick={handleNext}>הבא</Button>
         ) : (
-          <Button variant="contained" color="primary" onClick={handleFinalSubmit}>
-            שלח דיווח
+          <Button variant="contained" color="primary" onClick={handleFinalSubmit} endIcon={<SendIcon sx={{mr: 2}} />}>
+            שלח
           </Button>
         )}
       </Box>

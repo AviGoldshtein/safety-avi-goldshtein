@@ -25,7 +25,9 @@ export function OverViewContent() {
     { key: "currentLocation", label: "קורדינטות" },
   ];
 
-  const [selectedFilters, setSelectedFilters] = useState<string[]>(["eventDescription", "currentLocation", "subUnits"]);
+  const initialFilteredColumns: string[] = ["eventDescription", "currentLocation", "subUnits"]
+
+  const [selectedFilters, setSelectedFilters] = useState<string[]>(initialFilteredColumns);
   const [filterAnchor, setFilterAnchor] = useState<HTMLElement | null>(null);
   const [search, setSearch] = useState("");
 
@@ -42,6 +44,13 @@ export function OverViewContent() {
       setSortKey(key);
       setSortOrder("asc");
     }
+  }
+
+  function resetFilters(){
+    setSearch("");
+    setFromDate("");
+    setToDate("");
+    setSelectedFilters(initialFilteredColumns);
   }
 
   const filteredColumns = useMemo(
@@ -118,6 +127,7 @@ export function OverViewContent() {
         toDate={toDate}
         setFromDate={setFromDate}
         setToDate={setToDate}
+        resetFilters={resetFilters}
       />
 
       <TableContent

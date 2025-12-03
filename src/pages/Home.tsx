@@ -1,5 +1,4 @@
 import LayoutMain from "../layouts/LayoutMain"
-// import EventForm from "../components/EventForm/EventForm"
 import EventFormWizard from "../components/EventFormWizard/EventFormWizard"
 
 

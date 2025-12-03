@@ -17,6 +17,7 @@ interface TableFiltersProps {
   setFromDate: React.Dispatch<React.SetStateAction<string>>;
   toDate: string;
   setToDate: React.Dispatch<React.SetStateAction<string>>;
+  resetFilters: () => void;
 }
 
 export function TableFilters({
@@ -30,7 +31,8 @@ export function TableFilters({
   fromDate,
   setFromDate,
   toDate,
-  setToDate
+  setToDate,
+  resetFilters
 }: TableFiltersProps) {
 
   function toggleFilter(key: string) {
@@ -86,12 +88,7 @@ export function TableFilters({
         color="secondary"
         size="small"
         startIcon={<RestartAlt sx={{ml: 2}} />}
-        onClick={() => {
-          setSearch("");
-          setFromDate("");
-          setToDate("");
-          setSelectedFilters(["eventDescription", "currentLocation", "subUnits"]);
-        }}
+        onClick={resetFilters}
       >
         איפוס פילטרים
       </Button>
