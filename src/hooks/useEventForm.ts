@@ -3,6 +3,7 @@ import { validateEventForm } from "../utiles/validateEventForm";
 import { useEvents } from "../context/EventsContext";
 import type { FormData, FormErrors } from "../components/EventFormWizard/types";
 
+
 export function useEventForm() {
     const { setEvents } = useEvents()
 

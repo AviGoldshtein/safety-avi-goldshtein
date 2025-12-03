@@ -1,6 +1,6 @@
-import { Box, Paper, List, ListItemButton, ListItemText, Button } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
+import { Box, Paper, List, ListItemButton, ListItemText, Button } from "@mui/material";
 import { Dashboard, EventNote, Search, BarChart } from "@mui/icons-material"
 
 interface SidebarProps {

@@ -1,10 +1,12 @@
 import { Box, TextField } from "@mui/material";
+import { CalendarToday, AccessTime, FactCheck, MedicalServices } from "@mui/icons-material"
+
+import { RESULT_HAS_INJURED } from "../../../constants/eventConstants";
+import type { Step5Props } from "./stepTypes";
+
 import FormField from "../../FormField/FormField";
 import CustomSelect from "../../CustomSelect/CustomSelect";
 import options from "../../../data/options";
-import { RESULT_HAS_INJURED } from "../../../constants/eventConstants";
-import type { Step5Props } from "./stepTypes";
-import { CalendarToday, AccessTime, FactCheck, MedicalServices } from "@mui/icons-material"
 
 
 export default function Step5DateAndResults({ formData, errors, updateField }: Step5Props) {

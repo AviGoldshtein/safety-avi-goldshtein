@@ -1,10 +1,12 @@
 import { Box, Button, Typography, TextField, InputAdornment } from "@mui/material";
+import { LocationOn, GpsFixed, PersonPinCircle, PinDrop, Straighten, Height } from "@mui/icons-material"
+
+import { LOCATION_CIVIL } from "../../../constants/eventConstants";
+import type { Step2Props } from "./stepTypes";
+
 import FormField from "../../FormField/FormField";
 import RadioGroup from "../../RadioGroup/RadioGroup";
 import options from "../../../data/options";
-import { LOCATION_CIVIL } from "../../../constants/eventConstants";
-import type { Step2Props } from "./stepTypes";
-import { LocationOn, GpsFixed, PersonPinCircle, PinDrop, Straighten, Height } from "@mui/icons-material"
 
 
 export default function Step2Location({ formData, errors, updateField, takeCurrentLocation }: Step2Props) {

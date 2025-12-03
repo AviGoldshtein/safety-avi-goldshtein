@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Box, Stepper, Step, StepLabel, Button } from "@mui/material";
+import SendIcon from "@mui/icons-material/Send";
+
 import { useEventForm } from "../../hooks/useEventForm";
 import type { FormErrors } from "./types";
-import SendIcon from "@mui/icons-material/Send";
 
 import Step1BasicDetails from "./steps/Step1BasicDetails";
 import Step2Location from "./steps/Step2Location";

@@ -1,9 +1,11 @@
 import { Box, TextField } from "@mui/material";
+import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
+
+import type { Step4Props } from "./stepTypes";
+
 import FormField from "../../FormField/FormField";
 import RadioGroup from "../../RadioGroup/RadioGroup";
 import options from "../../../data/options";
-import type { Step4Props } from "./stepTypes";
-import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
 
 
 export default function Step4AdditionalDetails({ formData, errors, updateField }: Step4Props) {

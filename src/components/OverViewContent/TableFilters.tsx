@@ -20,6 +20,7 @@ interface TableFiltersProps {
   resetFilters: () => void;
 }
 
+
 export function TableFilters({
   columns,
   hiddenColumns,

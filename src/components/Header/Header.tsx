@@ -1,8 +1,5 @@
 import { AppBar, Toolbar, Typography, IconButton } from "@mui/material"
-
-import LightModeIcon from "@mui/icons-material/LightMode";
-import DarkModeIcon from "@mui/icons-material/DarkMode";
-
+import { LightMode, DarkMode } from "@mui/icons-material"
 import { useThemeMode } from "../../context/ThemeContext";
 
 export default function Header() {
@@ -22,7 +19,7 @@ export default function Header() {
         </Typography>
 
         <IconButton color="inherit" onClick={toggleMode}>
-          {mode === "light" ? <DarkModeIcon /> : <LightModeIcon />}
+          {mode === "light" ? <DarkMode /> : <LightMode />}
         </IconButton>
 
       </Toolbar>

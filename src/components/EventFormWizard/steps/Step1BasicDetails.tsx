@@ -1,9 +1,11 @@
 import { Box } from "@mui/material";
+import { MilitaryTech, FitnessCenter, Category } from "@mui/icons-material"
+
+import type { Step1Props } from "./stepTypes";
+
 import CustomSelect from "../../CustomSelect/CustomSelect";
 import FormField from "../../FormField/FormField";
 import options from "../../../data/options";
-import type { Step1Props } from "./stepTypes";
-import { MilitaryTech, FitnessCenter, Category } from "@mui/icons-material"
 
 
 export default function Step1BasicDetails({

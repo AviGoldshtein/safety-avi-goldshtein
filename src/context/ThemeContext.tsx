@@ -11,6 +11,7 @@ interface ThemeModeContextType {
 
 const ThemeModeContext = createContext<ThemeModeContextType | undefined>(undefined);
 
+
 export function useThemeMode(): ThemeModeContextType {
   const ctx = useContext(ThemeModeContext);
   if (!ctx) {

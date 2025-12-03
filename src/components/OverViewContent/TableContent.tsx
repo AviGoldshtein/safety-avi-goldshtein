@@ -1,16 +1,7 @@
 import { useTheme } from "@mui/material/styles";
 import type { FormData } from "../EventFormWizard/types";
 import { UnfoldMore, ArrowUpward, ArrowDownward, StackedBarChart } from "@mui/icons-material";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  Box
-} from "@mui/material";
+import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box } from "@mui/material";
 
 interface Column {
   key: keyof FormData;

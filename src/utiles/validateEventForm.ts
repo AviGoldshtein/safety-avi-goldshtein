@@ -1,4 +1,5 @@
 import type { FormErrors, Location } from "../components/EventFormWizard/types";
+import { RESULT_HAS_INJURED } from "../constants/eventConstants";
 
 interface ValidationArgs {
   unitActivityType: string;
@@ -67,10 +68,6 @@ export function validateLocationFields({
       errors.inputLng = "קו אורך לא תקין";
   }
 
-  if (typeLocation === "ידנית") {
-    if (!stringLoc.trim()) errors.stringLoc = "יש להזין מיקום טקסטואלי";
-  }
-
   if (typeLocation === "לווין") {
     if (!currentLocation) errors.currentLocation = "לא נבחר מיקום";
   }
@@ -81,9 +78,7 @@ export function validateLocationFields({
 export function validateEnvironmentalSection({ weather }: ValidationArgs) {
   const errors: FormErrors = {};
 
-  if (!weather || (Array.isArray(weather) && weather.length === 0)) {
-    errors.weather = "יש לבחור לפחות תנאי מזג אוויר אחד";
-  }
+  if (!weather.trim()) errors.weather = "יש לבחור מצב מזג אוויר";
 
   return errors;
 }
@@ -122,7 +117,7 @@ export function validateResultsSection({
     errors.results = "יש לבחור תוצאה";
   }
 
-  if (results.includes("יש נפגעים") && !injuriesLevel.trim()) {
+  if (results.includes(RESULT_HAS_INJURED) && !injuriesLevel.trim()) {
     errors.injuriesLevel = "יש לבחור דרגת פציעה";
   }
 

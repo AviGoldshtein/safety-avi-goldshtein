@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { FormData } from "../components/EventFormWizard/types";
 
+
 export function useEventFilters(initialHiddenColumns: string[]) {
   const [search, setSearch] = useState("");
   const [fromDate, setFromDate] = useState("");

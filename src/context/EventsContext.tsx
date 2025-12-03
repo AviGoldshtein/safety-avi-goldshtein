@@ -8,6 +8,7 @@ interface EventsContextType {
 
 const EventsContext = createContext<EventsContextType | null>(null);
 
+
 export function EventsProvider({ children }: { children: React.ReactNode }) {
   const [events, setEvents] = useState<FormData[]>([]);
 
