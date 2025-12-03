@@ -1,32 +1,16 @@
+import { useMemo } from "react";
 import { Box, Typography } from "@mui/material";
+import EventNoteIcon from "@mui/icons-material/EventNote";
+
+import { useEventFilters } from "../../hooks/useEventFilters";
+import { useEvents } from "../../context/EventsContext";
+
 import { TableContent } from "./TableContent";
 import { TableFilters } from "./TableFilters";
-import { useMemo } from "react";
-import type { FormData } from "../EventFormWizard/types";
-import { useEvents } from "../../context/EventsContext";
-import EventNoteIcon from "@mui/icons-material/EventNote";
-import { useEventFilters } from "../../hooks/useEventFilters";
+import { columns, initialHiddenColumns } from './tableConfig'
 
 export function OverViewContent() {
   const { events } = useEvents()
-
-  const columns: { key: keyof FormData; label: string }[] = [
-    { key: "eventDateTime", label: "תאריך" },
-    { key: "eventTime", label: "שעה" },
-    { key: "unitActivityType", label: "יחידה" },
-    { key: "activityType", label: "פעילות" },
-    { key: "category", label: "תחום" },
-    { key: "weather", label: "מזג אוויר" },
-    { key: "eventSeverity", label: "חומרה" },
-    { key: "eventDescription", label: "פירוט" },
-    { key: "subUnits", label: "תתי-יחידות" },
-    { key: "results", label: "תוצאות" },
-    { key: "injuriesLevel", label: "פגיעות" },
-    { key: "location", label: "מיקום" },
-    { key: "currentLocation", label: "קורדינטות" },
-  ];
-
-  const initialHiddenColumns: string[] = ["eventDescription", "currentLocation", "subUnits"]
   const filters = useEventFilters(initialHiddenColumns);
 
   const filteredColumns = useMemo(
