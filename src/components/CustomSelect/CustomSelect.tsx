@@ -1,5 +1,5 @@
-import { Box, TextField, MenuItem, useTheme } from "@mui/material";
-import { scrollbarStyle } from "../../styles/scrollbar";
+import { Box, TextField, MenuItem } from "@mui/material";
+import { textFieldStyle, selectStyle, wrapperStyle, iconBoxStyle } from "./CustomSelectStyles";
 
 interface CustomSelectProps {
   options: readonly string[];
@@ -9,31 +9,23 @@ interface CustomSelectProps {
 }
 
 export default function CustomSelect({ options, value, onChange, icon }: CustomSelectProps) {
-  const theme = useTheme();
 
   return (
-    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-      {icon && <Box sx={{ display: "flex", alignItems: "center" }}>{icon}</Box>}
+    <Box sx={wrapperStyle}>
+      {icon && <Box sx={iconBoxStyle}>{icon}</Box>}
       <TextField
         select
         value={value ?? ""}
         onChange={(e) => onChange(e.target.value)}
         size="small"
         fullWidth
-        sx={{
-          bgcolor: theme.palette.mode === "dark" ? "#1f2533" : "#e7e9ef",
-          borderRadius: 2,
-        }}
+        sx={textFieldStyle}
         SelectProps={{
           displayEmpty: true,
           renderValue: (selected) => !selected ? <em>בחר...</em> : selected as string,
           MenuProps: {
             PaperProps: {
-              sx: {
-                maxHeight: 400,
-                overflow: "auto",
-                ...scrollbarStyle,
-              }
+              sx: selectStyle
             }
           }
         }}
