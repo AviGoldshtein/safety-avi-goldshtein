@@ -1,7 +1,9 @@
 import { useTheme } from "@mui/material/styles";
-import type { FormData } from "../EventFormWizard/types";
-import { UnfoldMore, ArrowUpward, ArrowDownward, StackedBarChart } from "@mui/icons-material";
 import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box } from "@mui/material";
+import { UnfoldMore, ArrowUpward, ArrowDownward, StackedBarChart } from "@mui/icons-material";
+
+import type { FormData } from "../EventFormWizard/types";
+import { scrollbarStyle } from "../../styles/scrollbar";
 
 interface Column {
   key: keyof FormData;
@@ -70,28 +72,14 @@ export function TableContent({ content, columns, handleSort, sortKey, sortOrder 
     <TableContainer
       component={Paper}
       sx={{
+        flex: 1,
         minWidth: 800,
         minHeight: 300,
         backgroundColor: theme.palette.table.rowEven,
         maxHeight: 500,
         borderRadius: "7px",
         border: `2px solid ${theme.palette.table.border}`,
-
-        "&::-webkit-scrollbar": {
-            width: "15px",
-        },
-        "&::-webkit-scrollbar-track": {
-            background: theme.palette.table.rowOdd,
-            borderRadius: "10px",
-        },
-        "&::-webkit-scrollbar-thumb": {
-            background: theme.palette.table.header,
-            borderRadius: "10px",
-            border: `2px solid ${theme.palette.table.rowOdd}`,
-            },
-        "&::-webkit-scrollbar-thumb:hover": {
-            background: theme.palette.table.hover,
-        },
+        ...scrollbarStyle
       }}
     >
       <Table stickyHeader>

@@ -88,7 +88,7 @@ export default function EventFormWizard() {
     <Box
         sx={{
             p: 3,
-            minHeight: 700,
+            minHeight: "calc(100vh - 130px)",
             backgroundColor: "background.paper",
             borderRadius: 2,
             boxShadow: 3,

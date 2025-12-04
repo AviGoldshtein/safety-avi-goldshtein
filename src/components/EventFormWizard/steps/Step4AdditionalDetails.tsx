@@ -2,6 +2,7 @@ import { Box, TextField } from "@mui/material";
 import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
 
 import type { Step4Props } from "./stepTypes";
+import { scrollbarStyle } from "../../../styles/scrollbar";
 
 import FormField from "../../FormField/FormField";
 import RadioGroup from "../../RadioGroup/RadioGroup";
@@ -32,6 +33,12 @@ export default function Step4AdditionalDetails({ formData, errors, updateField }
           onChange={(e) => updateField("eventDescription", e.target.value)}
           fullWidth
           size="small"
+          sx={{
+            "& textarea": {
+              ...scrollbarStyle
+            }
+          }}
+
         />
       </FormField>
 

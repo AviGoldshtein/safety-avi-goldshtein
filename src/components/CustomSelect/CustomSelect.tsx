@@ -1,4 +1,5 @@
 import { Box, TextField, MenuItem, useTheme } from "@mui/material";
+import { scrollbarStyle } from "../../styles/scrollbar";
 
 interface CustomSelectProps {
   options: readonly string[];
@@ -25,7 +26,16 @@ export default function CustomSelect({ options, value, onChange, icon }: CustomS
         }}
         SelectProps={{
           displayEmpty: true,
-          renderValue: (selected) => !selected ? <em>בחר...</em> : selected as string
+          renderValue: (selected) => !selected ? <em>בחר...</em> : selected as string,
+          MenuProps: {
+            PaperProps: {
+              sx: {
+                maxHeight: 400,
+                overflow: "auto",
+                ...scrollbarStyle,
+              }
+            }
+          }
         }}
       >
         {options.map((opt) => (
