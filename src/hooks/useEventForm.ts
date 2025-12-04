@@ -2,6 +2,7 @@ import { useState } from "react";
 import { validateEventForm } from "../utiles/validateEventForm";
 import { useEvents } from "../context/EventsContext";
 import type { FormData, FormErrors } from "../components/EventFormWizard/types";
+import { LOCATION_TYPE_COORDINATE } from "../constants/eventConstants";
 
 
 export function useEventForm() {
@@ -64,7 +65,7 @@ export function useEventForm() {
     }
 
     function buildPayload(formData: FormData) {
-        if (formData.typeLocation === "נצ"){
+        if (formData.typeLocation === LOCATION_TYPE_COORDINATE){
             return {
                 ...formData,
                 currentLocation: {

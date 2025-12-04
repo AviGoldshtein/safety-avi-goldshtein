@@ -1,5 +1,6 @@
 import type { FormErrors, Location } from "../components/EventFormWizard/types";
 import { RESULT_HAS_INJURED } from "../constants/eventConstants";
+import { LOCATION_TYPE_COORDINATE } from "../constants/eventConstants";
 
 interface ValidationArgs {
   unitActivityType: string;
@@ -54,7 +55,7 @@ export function validateLocationFields({
     return errors;
   }
 
-  if (typeLocation === "נצ") {
+  if (typeLocation === LOCATION_TYPE_COORDINATE) {
     const lat = Number(inputLat);
     const lng = Number(inputLng);
 

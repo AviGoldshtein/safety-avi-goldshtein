@@ -1,7 +1,7 @@
 import { Box, Button, Typography, TextField, InputAdornment } from "@mui/material";
 import { LocationOn, GpsFixed, PersonPinCircle, PinDrop, Straighten, Height } from "@mui/icons-material"
 
-import { LOCATION_CIVIL } from "../../../constants/eventConstants";
+import { LOCATION_CIVIL, LOCATION_TYPE_COORDINATE } from "../../../constants/eventConstants";
 import type { Step2Props } from "./stepTypes";
 
 import FormField from "../../FormField/FormField";
@@ -35,7 +35,7 @@ export default function Step2Location({ formData, errors, updateField, takeCurre
             />
           </FormField>
 
-          {formData.typeLocation === "נצ" && (
+          {formData.typeLocation === LOCATION_TYPE_COORDINATE && (
             <Box sx={{ display: "flex", gap: 2 }}>
               <FormField label="אורך:" error={errors.inputLng}>
                 <TextField
