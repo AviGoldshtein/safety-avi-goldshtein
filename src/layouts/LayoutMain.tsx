@@ -6,7 +6,6 @@ import MenuIcon from "@mui/icons-material/Menu";
 import styles from "./LayoutMain.module.css";
 import Header from "../components/Header/Header";
 import Sidebar from "../components/Sidebar/Sidebar";
-// import Footer from "../components/Footer/Footer";
 
 interface LayoutMainProps {
   children: React.ReactNode;
@@ -49,8 +48,6 @@ export default function LayoutMain({ children }: LayoutMainProps) {
             {children}
         </main>
       </div>
-
-      {/* <Footer /> */}
     </div>
   );
 }

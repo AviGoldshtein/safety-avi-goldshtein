@@ -4,6 +4,7 @@ import SendIcon from "@mui/icons-material/Send";
 
 import { useEventForm } from "../../hooks/useEventForm";
 import type { FormErrors } from "./types";
+import { wrapperStyle, btnsWrapperStyle } from './EventFormWizardStyles'
 
 import Step1BasicDetails from "./steps/Step1BasicDetails";
 import Step2Location from "./steps/Step2Location";
@@ -85,16 +86,7 @@ export default function EventFormWizard() {
   }
 
   return (
-    <Box
-        sx={{
-            p: 3,
-            minHeight: "calc(100vh - 130px)",
-            backgroundColor: "background.paper",
-            borderRadius: 2,
-            boxShadow: 3,
-            display: "flex",
-            flexDirection: "column"
-        }}>
+    <Box sx={wrapperStyle}>
       <Stepper activeStep={activeStep} sx={{ mb: 3 }}>
         {steps.map((label, i) => (
           <Step key={label}>
@@ -107,7 +99,7 @@ export default function EventFormWizard() {
 
       {stepComponents[activeStep]}
 
-      <Box sx={{ display: "flex", justifyContent: "space-between", mt: "auto" }}>
+      <Box sx={btnsWrapperStyle}>
         <Button variant="contained" disabled={activeStep === 0} onClick={handleBack}>חזור</Button>
         {activeStep < steps.length - 1 ? (
           <Button variant="contained" onClick={handleNext}>הבא</Button>
