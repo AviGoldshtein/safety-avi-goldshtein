@@ -3,6 +3,7 @@ import { LocationOn, GpsFixed, PersonPinCircle, PinDrop, Straighten, Height } fr
 
 import { LOCATION_CIVIL, LOCATION_TYPE_COORDINATE } from "../../../constants/eventConstants";
 import type { Step2Props } from "./stepTypes";
+import { stepWrapperStyle, takeLocBtnStyle, selectedLocationTitleStyle, coordinateBoxStyle } from '../EventFormWizardStyles'
 
 import FormField from "../../FormField/FormField";
 import RadioGroup from "../../RadioGroup/RadioGroup";
@@ -12,7 +13,7 @@ import options from "../../../data/options";
 export default function Step2Location({ formData, errors, updateField, takeCurrentLocation }: Step2Props) {
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+    <Box sx={stepWrapperStyle}>
       <FormField label="מקום האירוע" error={errors.location}>
         <RadioGroup
           options={options.locationArr}
@@ -77,7 +78,7 @@ export default function Step2Location({ formData, errors, updateField, takeCurre
             <FormField label="מיקום לוויני:" error={errors.currentLocation}>
               <Button
                 variant="contained"
-                sx={{ bgcolor: "secondary", borderRadius: 2, mt: 1 }}
+                sx={takeLocBtnStyle}
                 onClick={takeCurrentLocation}
               >
                 <GpsFixed fontSize="small" sx={{ml: 1}} />
@@ -86,14 +87,14 @@ export default function Step2Location({ formData, errors, updateField, takeCurre
 
               {formData.currentLocation && (
                 <Box sx={{ mt: 1, textAlign: "center" }}>
-                  <Typography variant="body2" sx={{display: "flex", justifyContent: "center", alignItems: "center", padding: 0.5}}>
+                  <Typography sx={selectedLocationTitleStyle}>
                     <PersonPinCircle fontSize="small" />
                     המיקום שנבחר:
                   </Typography>
-                  <Typography sx={{bgcolor: "secondary.main", borderRadius: 1, margin: 0.1}} variant="body2">
+                  <Typography sx={coordinateBoxStyle} variant="body2">
                     אורך: {formData.currentLocation.lng}
                   </Typography>
-                  <Typography sx={{bgcolor: "secondary.main", borderRadius: 1, margin: 0.1}} variant="body2">
+                  <Typography sx={coordinateBoxStyle} variant="body2">
                     רוחב: {formData.currentLocation.lat}
                   </Typography>
                 </Box>

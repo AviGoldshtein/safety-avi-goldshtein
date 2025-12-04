@@ -2,6 +2,7 @@ import { Box } from "@mui/material";
 import { MilitaryTech, FitnessCenter, Category } from "@mui/icons-material"
 
 import type { Step1Props } from "./stepTypes";
+import { stepWrapperStyle } from '../EventFormWizardStyles'
 
 import CustomSelect from "../../CustomSelect/CustomSelect";
 import FormField from "../../FormField/FormField";
@@ -14,7 +15,7 @@ export default function Step1BasicDetails({
   updateField,
 }: Step1Props) {
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+    <Box sx={stepWrapperStyle}>
       <FormField label="מאפיין פעילות היחידה" error={errors.unitActivityType}>
         <CustomSelect
           options={options.unitActivityTypeArr}

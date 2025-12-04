@@ -3,6 +3,7 @@ import { CalendarToday, AccessTime, FactCheck, MedicalServices } from "@mui/icon
 
 import { RESULT_HAS_INJURED } from "../../../constants/eventConstants";
 import type { Step5Props } from "./stepTypes";
+import { stepWrapperStyle, fieldWithIconStyle } from '../EventFormWizardStyles'
 
 import FormField from "../../FormField/FormField";
 import CustomSelect from "../../CustomSelect/CustomSelect";
@@ -12,9 +13,9 @@ import options from "../../../data/options";
 export default function Step5DateAndResults({ formData, errors, updateField }: Step5Props) {
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+    <Box sx={stepWrapperStyle}>
       <FormField label="תאריך" error={errors.eventDateTime}>
-        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+        <Box sx={fieldWithIconStyle}>
           <CalendarToday fontSize="small" />
           <TextField
             type="date"
@@ -28,7 +29,7 @@ export default function Step5DateAndResults({ formData, errors, updateField }: S
       </FormField>
 
       <FormField label="שעה (לצפייה בלבד)">
-        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+        <Box sx={fieldWithIconStyle}>
           <AccessTime fontSize="small" />
           <TextField
             type="time"
