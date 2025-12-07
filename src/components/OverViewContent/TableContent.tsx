@@ -3,7 +3,8 @@ import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,
 import { UnfoldMore, ArrowUpward, ArrowDownward, StackedBarChart } from "@mui/icons-material";
 
 import type { FormData } from "../EventFormWizard/types";
-import { scrollbarStyle } from "../../styles/scrollbar";
+import { tableContainerStyles, tableHeaderCellStyles, tableRowStyles, tableCellStyles, emptyStateStyles, tableHeaderContentStyles } from './OverViewContentStyles'
+
 
 interface Column {
   key: keyof FormData;
@@ -71,97 +72,53 @@ export function TableContent({ content, columns, handleSort, sortKey, sortOrder 
   return (
     <TableContainer
       component={Paper}
-      sx={{
-        flex: 1,
-        minWidth: 800,
-        minHeight: 300,
-        backgroundColor: theme.palette.table.rowEven,
-        maxHeight: 500,
-        borderRadius: "7px",
-        border: `2px solid ${theme.palette.table.border}`,
-        ...scrollbarStyle
-      }}
+      sx={tableContainerStyles(theme)}
     >
-      <Table stickyHeader>
-        <TableHead>
-          <TableRow>
-            {columns.map((col) => (
-              <TableCell
-                key={col.key}
-                onClick={() => handleSort(col.key)}
-                sx={{
-                  cursor: "pointer",
-                  userSelect: "none",
-                  backgroundColor: theme.palette.table.header,
-                  color: theme.palette.table.text,
-                  fontWeight: 700,
-                  borderBottom: `1px solid ${theme.palette.table.divider}`,
-                }}
-              >
-                <Box sx={{ display: "flex", alignItems: "center", justifyContent: "start", gap: 0.5 }}>
-                  {col.label}
-                  {sortKey === col.key ? (
-                    sortOrder === "asc" ? (
-                      <ArrowUpward fontSize="small" />
-                    ) : (
-                      <ArrowDownward fontSize="small" />
-                    )
-                  ) : (
-                    <UnfoldMore fontSize="small" sx={{ opacity: 0.5 }} />
-                  )}
-                </Box>
-              </TableCell>
-            ))}
-          </TableRow>
-        </TableHead>
-
-        <TableBody >
-          {content.map((row, i) => (
-            <TableRow
-              key={i}
-              sx={{
-                backgroundColor:
-                  i % 2 === 0
-                    ? theme.palette.table.rowEven
-                    : theme.palette.table.rowOdd,
-                "&:hover": {
-                  backgroundColor: theme.palette.table.hover,
-                },
-                "& td": {
-                  color: theme.palette.table.text,
-                  borderBottom: `1px solid ${theme.palette.table.divider}`,
-                  padding: "10px 16px",
-                },
-              }}
-            >
+      {content.length ? (
+        <Table stickyHeader>
+          <TableHead>
+            <TableRow>
               {columns.map((col) => (
-                <TableCell key={col.key} sx={{maxWidth: 120, overflow: "hidden", textAlign: "right"}}>
-                  {formatCell(row[col.key])}
+                <TableCell
+                  key={col.key}
+                  onClick={() => handleSort(col.key)}
+                  sx={tableHeaderCellStyles(theme)}
+                >
+                  <Box sx={tableHeaderContentStyles}>
+                    {col.label}
+                    {sortKey === col.key ? (
+                      sortOrder === "asc"
+                        ? <ArrowUpward fontSize="small" />
+                        : <ArrowDownward fontSize="small" />
+                    ) : (
+                      <UnfoldMore fontSize="small" sx={{ opacity: 0.5 }} />
+                    )}
+                  </Box>
                 </TableCell>
               ))}
             </TableRow>
-          ))}
-        </TableBody>
-        {!content.length && (
+          </TableHead>
+
           <TableBody>
-            <TableRow>
-              <TableCell
-                colSpan={columns.length}
-                sx={{
-                  textAlign: "center",
-                  padding: "20px",
-                  color: theme.palette.table.text,
-                }}
-              >
-                <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 1.5 }}>
-                  לא נמצאו נתונים להצגה
-                  <StackedBarChart />
-                </Box>
-              </TableCell>
-            </TableRow>
+            {content.map((row, i) => (
+              <TableRow key={i} sx={tableRowStyles(theme, i)}>
+                {columns.map((col) => (
+                  <TableCell key={col.key} sx={tableCellStyles}>
+                    {formatCell(row[col.key])}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
           </TableBody>
-        )}
-      </Table>
+        </Table>
+      ) : (
+        <Box
+          sx={emptyStateStyles}
+        >
+          לא נמצאו נתונים להצגה
+          <StackedBarChart />
+        </Box>
+      )}
     </TableContainer>
   );
 }

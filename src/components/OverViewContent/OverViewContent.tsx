@@ -7,8 +7,9 @@ import { useEvents } from "../../context/EventsContext";
 
 import { TableContent } from "./TableContent";
 import { TableFilters } from "./TableFilters";
-import { columns, initialHiddenColumns } from './tableConfig'
-import { scrollbarStyle } from "../../styles/scrollbar";
+import { columns, initialHiddenColumns } from './tableConfig';
+import { eventsContainerStyles, eventsHeaderStyles } from './OverViewContentStyles';
+
 
 export function OverViewContent() {
   const { events } = useEvents()
@@ -72,19 +73,8 @@ export function OverViewContent() {
   }, [searchFilteredContent, filters.sortKey, filters.sortOrder]);
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        p: 2,
-        bgcolor: "background.paper",
-        borderRadius: 2,
-        height: "calc(100vh - 130px)",
-        overflow: "auto",
-        ...scrollbarStyle
-      }}
-    >
-      <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}>
+    <Box sx={eventsContainerStyles}>
+      <Box sx={eventsHeaderStyles}>
         <EventNoteIcon fontSize="large" />
         <Typography variant="h5">רשימת אירועים</Typography>
       </Box>
