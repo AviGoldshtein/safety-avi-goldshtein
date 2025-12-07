@@ -1,0 +1,21 @@
+.layoutContainer {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding-top: 64px;   /* גובה ההדר */
+  /* padding-bottom: 70px; */
+}
+
+.contentWrapper {
+  display: flex;
+  flex: 1;
+}
+
+.main {
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: margin-right 0.3s ease;
+}
