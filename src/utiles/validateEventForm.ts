@@ -8,10 +8,9 @@ interface ValidationArgs {
   category: string;
   location: string;
 
-  typeLocation: string;
+  typeLocation: string | null;
   inputLat: string;
   inputLng: string;
-  stringLoc: string;
   currentLocation: Location | null;
   weather: string;
 
@@ -19,7 +18,7 @@ interface ValidationArgs {
   subUnits: string;
   eventSeverity: string;
   results: string;
-  injuriesLevel: string;
+  injuriesLevel: string | null;
   eventDateTime: string;
 }
 
@@ -50,7 +49,7 @@ export function validateLocationFields({
 
   if (location !== "שטח אזרחי") return errors;
 
-  if (!typeLocation.trim()) {
+  if (typeLocation && !typeLocation.trim()) {
     errors.typeLocation = "יש לבחור סוג מיקום";
     return errors;
   }
@@ -117,7 +116,7 @@ export function validateResultsSection({
     errors.results = "יש לבחור תוצאה";
   }
 
-  if (results.includes(RESULT_HAS_INJURED) && !injuriesLevel.trim()) {
+  if (results.includes(RESULT_HAS_INJURED) && injuriesLevel && !injuriesLevel.trim()) {
     errors.injuriesLevel = "יש לבחור דרגת פציעה";
   }
 

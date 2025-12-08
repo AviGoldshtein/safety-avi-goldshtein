@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { validateEventForm } from "../utiles/validateEventForm";
 import { useEvents } from "../context/EventsContext";
-import type { FormData, FormErrors } from "../components/EventFormWizard/types";
+import type { FormData, FormErrors, Payload } from "../components/EventFormWizard/types";
 import { LOCATION_TYPE_COORDINATE } from "../constants/eventConstants";
 
 
@@ -14,10 +14,9 @@ export function useEventForm() {
         category: "",
         location: "",
 
-        typeLocation: "",
+        typeLocation: null,
         inputLat: "",
         inputLng: "",
-        stringLoc: "",
         currentLocation: null,
         weather: "",
 
@@ -25,7 +24,7 @@ export function useEventForm() {
         subUnits: "",
         eventSeverity: "",
         results: "",
-        injuriesLevel: "",
+        injuriesLevel: null,
         eventDateTime: "",
         eventTime: new Date().toTimeString().slice(0, 5)
     }
@@ -64,39 +63,40 @@ export function useEventForm() {
         setErrors({});
     }
 
-    function buildPayload(formData: FormData) {
+    function buildPayload(formData: FormData): Payload {
         if (formData.typeLocation === LOCATION_TYPE_COORDINATE){
             return {
                 ...formData,
                 currentLocation: {
-                lat: Number(formData.inputLat),
-                lng: Number(formData.inputLng),
+                    lat: Number(formData.inputLat),
+                    lng: Number(formData.inputLng),
                 },
-                inputLat: "",
-                inputLng: "",
-                stringLoc: "",
             };
         }
 
-        return formData;
+        const { inputLat, inputLng, ...rest } = formData;
+
+        return rest;
     }
 
-    function handleSubmit(callback: (data: FormData) => void) {
+    function handleSubmit(callback: (data: Payload) => void) {
         const newErrors = validateEventForm(formData);
         setErrors(newErrors);
 
         if (Object.keys(newErrors).length > 0) return;
 
-        callback(formData);
+        const builtFormData = buildPayload(formData);
 
-        saveEventToLocalStorage(buildPayload(formData));
+        callback(builtFormData);
+
+        saveEventToLocalStorage(builtFormData);
 
         setEvents(prev => [...prev, formData]);
         
         resetForm();
     }
 
-    function saveEventToLocalStorage(event: FormData) {
+    function saveEventToLocalStorage(event: Payload) {
         const existing = localStorage.getItem("eventsList");
         const events = existing ? JSON.parse(existing) : [];
 

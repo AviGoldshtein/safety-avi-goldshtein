@@ -19,7 +19,6 @@ export interface FormErrors {
     typeLocation?: string;
     inputLat?: string;
     inputLng?: string;
-    stringLoc?: string;
     currentLocation?: string;
     eventDescription?: string;
     subUnits?: string;
@@ -40,10 +39,9 @@ export interface FormData {
     category: string;
     location: string;
 
-    typeLocation: string;
+    typeLocation: string | null;
     inputLat: string;
     inputLng: string;
-    stringLoc: string;
     currentLocation: Location | null;
     weather: string;
 
@@ -51,7 +49,11 @@ export interface FormData {
     subUnits: string;
     eventSeverity: string;
     results: string;
-    injuriesLevel: string;
+    injuriesLevel: string | null;
     eventDateTime: string;
     eventTime: string;
 }
+
+export type Payload = Omit<FormData, "inputLat" | "inputLng"> & {
+  currentLocation?: { lat: number; lng: number } | null;
+};
