@@ -9,8 +9,8 @@ interface ValidationArgs {
   location: string;
 
   typeLocation: string | null;
-  inputLat: string;
-  inputLng: string;
+  inputLat?: string;
+  inputLng?: string;
   currentLocation: Location | null;
   weather: string;
 
@@ -58,11 +58,11 @@ export function validateLocationFields({
     const lat = Number(inputLat);
     const lng = Number(inputLng);
 
-    if (!inputLat.trim()) errors.inputLat = "יש להזין קו רוחב";
+    if (inputLat && !inputLat.trim()) errors.inputLat = "יש להזין קו רוחב";
     else if (isNaN(lat) || lat < -90 || lat > 90)
       errors.inputLat = "קו רוחב לא תקין";
 
-    if (!inputLng.trim()) errors.inputLng = "יש להזין קו אורך";
+    if (inputLng && !inputLng.trim()) errors.inputLng = "יש להזין קו אורך";
     else if (isNaN(lng) || lng < -180 || lng > 180)
       errors.inputLng = "קו אורך לא תקין";
   }

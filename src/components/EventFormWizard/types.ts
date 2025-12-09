@@ -34,14 +34,15 @@ export interface Location {
 }
 
 export interface FormData {
+    id?: string | null;
     unitActivityType: string;
     activityType: string;
     category: string;
     location: string;
 
     typeLocation: string | null;
-    inputLat: string;
-    inputLng: string;
+    inputLat?: string;
+    inputLng?: string;
     currentLocation: Location | null;
     weather: string;
 
@@ -54,6 +55,6 @@ export interface FormData {
     eventTime: string;
 }
 
-export type Payload = Omit<FormData, "inputLat" | "inputLng"> & {
+export type Payload = Omit<FormData, "inputLat" | "inputLng" | "id"> & {
   currentLocation?: { lat: number; lng: number } | null;
 };
