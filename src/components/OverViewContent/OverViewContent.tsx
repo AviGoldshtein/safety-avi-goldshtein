@@ -27,7 +27,7 @@ export function OverViewContent() {
     setSelectedEvent(null);
   }
 
-  
+
   const { events } = useEvents()
   const filters = useEventFilters(initialHiddenColumns);
 
@@ -108,8 +108,6 @@ export function OverViewContent() {
         open={open}
         onClose={onClose}
         selectedEvent={selectedEvent}
-        onEdit={() => {}}
-        onDelete={() => {}}
       />
     </Box>
   );

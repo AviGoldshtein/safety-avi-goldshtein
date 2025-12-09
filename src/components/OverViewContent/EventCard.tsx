@@ -11,17 +11,18 @@ import {
 } from "@mui/material";
 import { columns } from "./tableConfig";
 import { scrollbarStyle } from "../../styles/scrollbar";
+import { useEvents } from "../../context/EventsContext";
+
 
 interface EventCardProps {
   open: boolean;
   selectedEvent: any | null;
   onClose: () => void;
-  onEdit: (event: any) => void;
-  onDelete: (eventId: string) => void;
 }
 
-export function EventCard({ open, selectedEvent, onClose, onDelete, onEdit }: EventCardProps) {
+export function EventCard({ open, selectedEvent, onClose }: EventCardProps) {
   const theme = useTheme();
+  const { deleteEvent, updateEvent } = useEvents();
 
   function getLabel(key: string) {
     return columns.find(c => c.key === key)?.label ?? key;
@@ -96,7 +97,10 @@ export function EventCard({ open, selectedEvent, onClose, onDelete, onEdit }: Ev
         <Button
           color="error"
           variant="contained"
-          onClick={() => onDelete(selectedEvent.id)}
+          onClick={async () => {
+            await deleteEvent(selectedEvent.id);
+            onClose();
+          }}
           sx={{ fontWeight: "bold" }}
         >
           מחיקה
@@ -105,7 +109,7 @@ export function EventCard({ open, selectedEvent, onClose, onDelete, onEdit }: Ev
         <Button
           color="info"
           variant="contained"
-          onClick={() => onEdit(selectedEvent)}
+          onClick={() => updateEvent(selectedEvent.id, selectedEvent)}
           sx={{ fontWeight: "bold" }}
         >
           עריכה
