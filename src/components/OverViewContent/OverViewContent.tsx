@@ -1,9 +1,10 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Box, Typography } from "@mui/material";
 import EventNoteIcon from "@mui/icons-material/EventNote";
 
 import { useEventFilters } from "../../hooks/useEventFilters";
 import { useEvents } from "../../context/EventsContext";
+import { EventCard } from "./EventCard";
 
 import { TableContent } from "./TableContent";
 import { TableFilters } from "./TableFilters";
@@ -12,6 +13,21 @@ import { eventsContainerStyles, eventsHeaderStyles } from './OverViewContentStyl
 
 
 export function OverViewContent() {
+
+  const [selectedEvent, setSelectedEvent] = useState<any | null>(null);
+  const [open, setOpen] = useState(false);
+
+  function onOpenDetails(event: any) {
+    setSelectedEvent(event);
+    setOpen(true);
+  }
+
+  function onClose() {
+    setOpen(false);
+    setSelectedEvent(null);
+  }
+
+  
   const { events } = useEvents()
   const filters = useEventFilters(initialHiddenColumns);
 
@@ -84,7 +100,16 @@ export function OverViewContent() {
       <TableContent
         content={sortedContent}
         columns={filteredColumns}
+        onOpenDetails={onOpenDetails}
         {...filters}
+      />
+
+      <EventCard
+        open={open}
+        onClose={onClose}
+        selectedEvent={selectedEvent}
+        onEdit={() => {}}
+        onDelete={() => {}}
       />
     </Box>
   );

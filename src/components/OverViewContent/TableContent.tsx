@@ -1,5 +1,5 @@
 import { useTheme } from "@mui/material/styles";
-import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box } from "@mui/material";
+import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box, Button } from "@mui/material";
 import { UnfoldMore, ArrowUpward, ArrowDownward, StackedBarChart } from "@mui/icons-material";
 
 import type { FormData } from "../EventFormWizard/types";
@@ -17,9 +17,10 @@ interface TableContentProps {
   handleSort: (key: keyof FormData) => void;
   sortKey: string | null;
   sortOrder: "asc" | "desc";
+  onOpenDetails: (row: any) => void;
 }
 
-export function TableContent({ content, columns, handleSort, sortKey, sortOrder }: TableContentProps) {
+export function TableContent({ content, columns, handleSort, sortKey, sortOrder, onOpenDetails }: TableContentProps) {
     const theme = useTheme();
 
     function isIsoDate(value: string) {
@@ -96,6 +97,7 @@ export function TableContent({ content, columns, handleSort, sortKey, sortOrder 
                   </Box>
                 </TableCell>
               ))}
+              <TableCell sx={tableHeaderCellStyles(theme)}>פעולות</TableCell>
             </TableRow>
           </TableHead>
 
@@ -107,6 +109,16 @@ export function TableContent({ content, columns, handleSort, sortKey, sortOrder 
                     {formatCell(row[col.key])}
                   </TableCell>
                 ))}
+
+                <TableCell>
+                  <Button
+                    variant="contained"
+                    size="small"
+                    onClick={() => onOpenDetails(row)}
+                  >
+                    לפרטים
+                  </Button>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
