@@ -3,11 +3,16 @@ import { validateEventForm } from "../utiles/validateEventForm";
 import { useEvents } from "../context/EventsContext";
 import type { FormData, FormErrors, Payload } from "../components/EventFormWizard/types";
 import { LOCATION_TYPE_COORDINATE } from "../constants/eventConstants";
-import { createEvent } from "../api/events";
+import { createEvent, updateEventApi } from "../api/events";
 import { mapZodIssuesToFormErrors } from "../utiles/zodErrors";
 
 
-export function useEventForm() {
+interface SubmitOptions {
+  mode?: "create" | "edit";
+  callback: (data: Payload) => void;
+}
+
+export function useEventForm(initialData?: Partial<FormData>) {
     const { setEvents } = useEvents()
 
     const initialState: FormData = {
@@ -28,7 +33,8 @@ export function useEventForm() {
         results: "",
         injuriesLevel: null,
         eventDateTime: "",
-        eventTime: new Date().toTimeString().slice(0, 5)
+        eventTime: new Date().toTimeString().slice(0, 5),
+        ...initialData,
     }
 
     const [errors, setErrors] = useState<FormErrors>({});
@@ -76,28 +82,35 @@ export function useEventForm() {
             };
         }
 
-        const { inputLat, inputLng, ...rest } = formData;
+        const { inputLat, inputLng, id, ...rest } = formData;
 
         return rest;
     }
 
-    async function handleSubmit(callback: (data: Payload) => void) {
+    async function handleSubmit({ mode = "create", callback }: SubmitOptions) {
         const newErrors = validateEventForm(formData);
         setErrors(newErrors);
 
         if (Object.keys(newErrors).length > 0) return;
 
         const builtFormData = buildPayload(formData);
+        
 
         try {
-            const savedEvent = await createEvent(builtFormData);
+            let savedEvent: FormData;
+            if (mode === "create") {
+                savedEvent = await createEvent(builtFormData);
+                setEvents(prev => [...prev, savedEvent]);
+            } else {
+                // mode === "edit"
+                savedEvent = await updateEventApi(initialData?.id!, builtFormData);
+                setEvents(prev => prev.map(ev => ev.id === savedEvent.id ? savedEvent : ev));
+            }
 
             callback(savedEvent);
-            setEvents(prev => [...prev, savedEvent]);
-            resetForm();
-        } 
-        
-        catch (err: any) {
+            if (mode === "create") resetForm();
+
+        } catch (err: any) {
             console.error("Error saving event:", err);
 
             if (err.type === "validation") {

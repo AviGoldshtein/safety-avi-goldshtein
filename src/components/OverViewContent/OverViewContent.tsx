@@ -1,10 +1,11 @@
 import { useMemo, useState } from "react";
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, DialogContent, Dialog } from "@mui/material";
 import EventNoteIcon from "@mui/icons-material/EventNote";
 
 import { useEventFilters } from "../../hooks/useEventFilters";
 import { useEvents } from "../../context/EventsContext";
 import { EventCard } from "./EventCard";
+import EventFormWizard from "../EventFormWizard/EventFormWizard";
 
 import { TableContent } from "./TableContent";
 import { TableFilters } from "./TableFilters";
@@ -15,15 +16,27 @@ import { eventsContainerStyles, eventsHeaderStyles } from './OverViewContentStyl
 export function OverViewContent() {
 
   const [selectedEvent, setSelectedEvent] = useState<any | null>(null);
-  const [open, setOpen] = useState(false);
+  const [openDetails, setOpenDetails] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
 
   function onOpenDetails(event: any) {
     setSelectedEvent(event);
-    setOpen(true);
+    setOpenDetails(true);
   }
 
-  function onClose() {
-    setOpen(false);
+  function onCloseDetails() {
+    setOpenDetails(false);
+    setSelectedEvent(null);
+  }
+
+  function onOpenEdit(event: any) {
+    setSelectedEvent(event);
+    setOpenEdit(true);
+    setOpenDetails(false);
+  }
+
+  function onCloseEdit() {
+    setOpenEdit(false);
     setSelectedEvent(null);
   }
 
@@ -105,10 +118,23 @@ export function OverViewContent() {
       />
 
       <EventCard
-        open={open}
-        onClose={onClose}
+        open={openDetails}
+        onClose={onCloseDetails}
         selectedEvent={selectedEvent}
+        onOpenEdit={onOpenEdit}
       />
+
+      {openEdit && selectedEvent && (
+        <Dialog open={openEdit} onClose={onCloseEdit} fullWidth maxWidth="md">
+          <DialogContent>
+            <EventFormWizard
+              initialData={selectedEvent}
+              editMode={true}
+              onClose={onCloseEdit}
+            />
+          </DialogContent>
+        </Dialog>
+      )}
     </Box>
   );
 }

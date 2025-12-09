@@ -18,11 +18,12 @@ interface EventCardProps {
   open: boolean;
   selectedEvent: any | null;
   onClose: () => void;
+  onOpenEdit: (event: any) => void;
 }
 
-export function EventCard({ open, selectedEvent, onClose }: EventCardProps) {
+export function EventCard({ open, selectedEvent, onClose, onOpenEdit }: EventCardProps) {
   const theme = useTheme();
-  const { deleteEvent, updateEvent } = useEvents();
+  const { deleteEvent } = useEvents();
 
   function getLabel(key: string) {
     return columns.find(c => c.key === key)?.label ?? key;
@@ -109,7 +110,7 @@ export function EventCard({ open, selectedEvent, onClose }: EventCardProps) {
         <Button
           color="info"
           variant="contained"
-          onClick={() => updateEvent(selectedEvent.id, selectedEvent)}
+          onClick={() => onOpenEdit(selectedEvent)}
           sx={{ fontWeight: "bold" }}
         >
           עריכה

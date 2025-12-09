@@ -3,7 +3,7 @@ import { Box, Stepper, Step, StepLabel, Button } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 
 import { useEventForm } from "../../hooks/useEventForm";
-import type { FormErrors } from "./types";
+import type { FormErrors, FormData } from "./types";
 import { wrapperStyle, btnsWrapperStyle } from './EventFormWizardStyles'
 
 import Step1BasicDetails from "./steps/Step1BasicDetails";
@@ -28,8 +28,15 @@ const stepFields: Record<number, string[]> = {
   4: ["eventDateTime", "results", "injuriesLevel"]
 };
 
-export default function EventFormWizard() {
-  const { formData, errors, setErrors, handleSubmit, validateEventForm, updateField, takeCurrentLocation } = useEventForm();
+
+interface EventFormWizardProps {
+  initialData?: Partial<FormData>;
+  editMode?: boolean;
+  onClose?: () => void;
+}
+
+export default function EventFormWizard({ initialData, onClose, editMode = false }: EventFormWizardProps) {
+  const { formData, errors, setErrors, handleSubmit, validateEventForm, updateField, takeCurrentLocation } = useEventForm(initialData);
   const [activeStep, setActiveStep] = useState(0);
 
   const sharedProps = {
@@ -73,11 +80,14 @@ export default function EventFormWizard() {
 
   async function handleFinalSubmit() {
     try {
-      await handleSubmit((data) => {
-        console.log("Sending to server:", data);
-        setActiveStep(0);
+      await handleSubmit({
+        mode: editMode ? "edit" : "create",
+        callback: (data) => {
+          console.log(editMode ? "Updated:" : "Created:", data);
+          setActiveStep(0);
+          if (onClose) onClose();
+        },
       });
-
     } catch (err) {
       console.error("Submit failed:", err);
     }
