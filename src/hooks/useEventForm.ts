@@ -3,6 +3,8 @@ import { validateEventForm } from "../utiles/validateEventForm";
 import { useEvents } from "../context/EventsContext";
 import type { FormData, FormErrors, Payload } from "../components/EventFormWizard/types";
 import { LOCATION_TYPE_COORDINATE } from "../constants/eventConstants";
+import { createEvent } from "../api/events";
+import { mapZodIssuesToFormErrors } from "../utiles/zodErrors";
 
 
 export function useEventForm() {
@@ -79,7 +81,7 @@ export function useEventForm() {
         return rest;
     }
 
-    function handleSubmit(callback: (data: Payload) => void) {
+    async function handleSubmit(callback: (data: Payload) => void) {
         const newErrors = validateEventForm(formData);
         setErrors(newErrors);
 
@@ -87,23 +89,27 @@ export function useEventForm() {
 
         const builtFormData = buildPayload(formData);
 
-        callback(builtFormData);
+        try {
+            const savedEvent = await createEvent(builtFormData);
 
-        saveEventToLocalStorage(builtFormData);
-
-        setEvents(prev => [...prev, formData]);
+            callback(savedEvent);
+            setEvents(prev => [...prev, savedEvent]);
+            resetForm();
+        } 
         
-        resetForm();
+        catch (err: any) {
+            console.error("Error saving event:", err);
+
+            if (err.type === "validation") {
+                const formErrors = mapZodIssuesToFormErrors(err.issues);
+                setErrors(formErrors);
+                return;
+            }
+
+            alert(err.message || "Something went wrong on the server");
+        }
     }
 
-    function saveEventToLocalStorage(event: Payload) {
-        const existing = localStorage.getItem("eventsList");
-        const events = existing ? JSON.parse(existing) : [];
-
-        events.push(event);
-
-        localStorage.setItem("eventsList", JSON.stringify(events));
-    }
 
     return {
         formData,

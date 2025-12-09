@@ -1,5 +1,6 @@
 import { createContext, useState, useContext, useEffect } from "react";
 import type { FormData } from "../components/EventFormWizard/types";
+import { fetchEvents } from "../api/events";
 
 interface EventsContextType {
   events: FormData[];
@@ -13,9 +14,7 @@ export function EventsProvider({ children }: { children: React.ReactNode }) {
   const [events, setEvents] = useState<FormData[]>([]);
 
   useEffect(() => {
-    setEvents(
-        JSON.parse(localStorage.getItem("eventsList") || "[]")
-    )
+    fetchEvents().then(setEvents).catch(console.error)
   }, []);
 
   return (

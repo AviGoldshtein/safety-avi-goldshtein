@@ -29,7 +29,7 @@ const stepFields: Record<number, string[]> = {
 };
 
 export default function EventFormWizard() {
-  const { formData, errors, setErrors, handleSubmit, validateEventForm, updateField, takeCurrentLocation, resetForm } = useEventForm();
+  const { formData, errors, setErrors, handleSubmit, validateEventForm, updateField, takeCurrentLocation } = useEventForm();
   const [activeStep, setActiveStep] = useState(0);
 
   const sharedProps = {
@@ -71,19 +71,18 @@ export default function EventFormWizard() {
     setActiveStep(prev => prev - 1);
   }
 
-  function handleFinalSubmit() {
-    const allErrors = validateEventForm(formData);
-    setErrors(allErrors);
-    
-    if (Object.keys(allErrors).length > 0) return;
+  async function handleFinalSubmit() {
+    try {
+      await handleSubmit((data) => {
+        console.log("Sending to server:", data);
+        setActiveStep(0);
+      });
 
-    handleSubmit((data) => {
-      console.log("Sending to server:", data);
-    });
-
-    resetForm();
-    setActiveStep(0);
+    } catch (err) {
+      console.error("Submit failed:", err);
+    }
   }
+
 
   return (
     <Box sx={wrapperStyle}>
