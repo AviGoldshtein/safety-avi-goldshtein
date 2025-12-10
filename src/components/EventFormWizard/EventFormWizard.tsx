@@ -99,7 +99,16 @@ export default function EventFormWizard({ initialData, onClose, editMode = false
       <Stepper activeStep={activeStep} sx={{ mb: 3 }}>
         {steps.map((label, i) => (
           <Step key={label}>
-            <StepLabel error={stepHasErrors(i)} StepIconProps={{sx:{ ml: 1} }}>
+            <StepLabel 
+              error={stepHasErrors(i)} 
+              StepIconProps={{sx:{ ml: 1} }}
+              sx={{
+                cursor: "pointer",
+                "& .MuiStepLabel-label": { cursor: "pointer" },
+                "& .MuiStepIcon-root": { cursor: "pointer" }
+              }}
+              onClick={() => setActiveStep(i)}
+            >
               {label}
             </StepLabel>
           </Step>
@@ -113,7 +122,7 @@ export default function EventFormWizard({ initialData, onClose, editMode = false
         {activeStep < steps.length - 1 ? (
           <Button variant="contained" onClick={handleNext}>הבא</Button>
         ) : (
-          <Button variant="contained" color="primary" onClick={handleFinalSubmit} endIcon={<SendIcon sx={{mr: 2}} />}>
+          <Button variant="contained" color="success" onClick={handleFinalSubmit} endIcon={<SendIcon sx={{mr: 2}} />}>
             שלח
           </Button>
         )}

@@ -72,7 +72,7 @@ export function useEventForm(initialData?: Partial<FormData>) {
     }
 
     function buildPayload(formData: FormData): Payload {
-        if (formData.typeLocation === LOCATION_TYPE_COORDINATE){
+        if (formData.typeLocation === LOCATION_TYPE_COORDINATE && formData.inputLat && formData.inputLng) {
             return {
                 ...formData,
                 currentLocation: {
