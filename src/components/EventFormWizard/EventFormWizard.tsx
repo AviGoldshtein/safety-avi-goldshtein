@@ -1,10 +1,19 @@
 import { useState } from "react";
-import { Box, Stepper, Step, StepLabel, Button } from "@mui/material";
+import {
+  Box,
+  Stepper,
+  Step,
+  StepLabel,
+  Button,
+  IconButton,
+} from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
+import AttachFileIcon from "@mui/icons-material/AttachFile";
 
 import { useEventForm } from "../../hooks/useEventForm";
 import type { FormErrors, FormData } from "./types";
-import { wrapperStyle, btnsWrapperStyle } from './EventFormWizardStyles'
+import { wrapperStyle, btnsWrapperStyle } from "./EventFormWizardStyles";
+import ImageUploadDialog from "../ImageUploadDialog/ImageUploadDialog";
 
 import Step1BasicDetails from "./steps/Step1BasicDetails";
 import Step2Location from "./steps/Step2Location";
@@ -17,7 +26,7 @@ const steps = [
   "מיקום האירוע",
   "תנאים סביבתיים",
   "פרטים משלימים",
-  "תאריך ותוצאות"
+  "תאריך ותוצאות",
 ];
 
 const stepFields: Record<number, string[]> = {
@@ -25,9 +34,8 @@ const stepFields: Record<number, string[]> = {
   1: ["location", "typeLocation", "inputLat", "inputLng", "currentLocation"],
   2: ["weather"],
   3: ["eventSeverity", "eventDescription", "subUnits"],
-  4: ["eventDateTime", "results", "injuriesLevel"]
+  4: ["eventDateTime", "results", "injuriesLevel"],
 };
-
 
 interface EventFormWizardProps {
   initialData?: Partial<FormData>;
@@ -35,9 +43,25 @@ interface EventFormWizardProps {
   onClose?: () => void;
 }
 
-export default function EventFormWizard({ initialData, onClose, editMode = false }: EventFormWizardProps) {
-  const { formData, errors, setErrors, handleSubmit, validateEventForm, updateField, takeCurrentLocation } = useEventForm(initialData);
+export default function EventFormWizard({
+  initialData,
+  onClose,
+  editMode = false,
+}: EventFormWizardProps) {
+  const {
+    formData,
+    errors,
+    images,
+    setImages,
+    setErrors,
+    handleSubmit,
+    validateEventForm,
+    updateField,
+    takeCurrentLocation,
+  } = useEventForm(initialData);
+
   const [activeStep, setActiveStep] = useState(0);
+  const [openImageDialog, setOpenImageDialog] = useState(false);
 
   const sharedProps = {
     formData,
@@ -50,12 +74,12 @@ export default function EventFormWizard({ initialData, onClose, editMode = false
     <Step2Location {...sharedProps} takeCurrentLocation={takeCurrentLocation} />,
     <Step3Environmental {...sharedProps} />,
     <Step4AdditionalDetails {...sharedProps} />,
-    <Step5DateAndResults {...sharedProps} />
+    <Step5DateAndResults {...sharedProps} />,
   ];
 
   function stepHasErrors(stepIndex: number) {
     const fields = stepFields[stepIndex];
-    return fields.some(f => errors[f as keyof FormErrors]);
+    return fields.some((f) => errors[f as keyof FormErrors]);
   }
 
   function validateCurrentStep(): FormErrors {
@@ -71,11 +95,11 @@ export default function EventFormWizard({ initialData, onClose, editMode = false
 
     if (Object.keys(stepErrors).length > 0) return;
 
-    setActiveStep(prev => prev + 1);
+    setActiveStep((prev) => prev + 1);
   }
 
   function handleBack() {
-    setActiveStep(prev => prev - 1);
+    setActiveStep((prev) => prev - 1);
   }
 
   async function handleFinalSubmit() {
@@ -93,19 +117,18 @@ export default function EventFormWizard({ initialData, onClose, editMode = false
     }
   }
 
-
   return (
     <Box sx={wrapperStyle}>
       <Stepper activeStep={activeStep} sx={{ mb: 3 }}>
         {steps.map((label, i) => (
           <Step key={label}>
-            <StepLabel 
-              error={stepHasErrors(i)} 
-              StepIconProps={{sx:{ ml: 1} }}
+            <StepLabel
+              error={stepHasErrors(i)}
+              StepIconProps={{ sx: { ml: 1 } }}
               sx={{
                 cursor: "pointer",
                 "& .MuiStepLabel-label": { cursor: "pointer" },
-                "& .MuiStepIcon-root": { cursor: "pointer" }
+                "& .MuiStepIcon-root": { cursor: "pointer" },
               }}
               onClick={() => setActiveStep(i)}
             >
@@ -118,14 +141,44 @@ export default function EventFormWizard({ initialData, onClose, editMode = false
       {stepComponents[activeStep]}
 
       <Box sx={btnsWrapperStyle}>
-        <Button variant="contained" disabled={activeStep === 0} onClick={handleBack}>חזור</Button>
-        {activeStep < steps.length - 1 ? (
-          <Button variant="contained" onClick={handleNext}>הבא</Button>
-        ) : (
-          <Button variant="contained" color="success" onClick={handleFinalSubmit} endIcon={<SendIcon sx={{mr: 2}} />}>
-            שלח
-          </Button>
-        )}
+        <Button
+          variant="contained"
+          disabled={activeStep === 0}
+          onClick={handleBack}
+        >
+          חזור
+        </Button>
+        <Box sx={{ display: "flex", flexDirection: "row", gap: 1 }}>
+          <IconButton
+            aria-label="הוספת תמונה"
+            onClick={() => setOpenImageDialog(true)}
+            sx={{ mr: 1 }}
+          >
+            <AttachFileIcon />
+          </IconButton>
+
+          {activeStep < steps.length - 1 ? (
+            <Button variant="contained" onClick={handleNext}>
+              הבא
+            </Button>
+          ) : (
+            <Button
+              variant="contained"
+              color="success"
+              onClick={handleFinalSubmit}
+              endIcon={<SendIcon sx={{ mr: 2 }} />}
+            >
+              שלח
+            </Button>
+          )}
+
+          <ImageUploadDialog
+            open={openImageDialog}
+            onClose={() => setOpenImageDialog(false)}
+            images={images}
+            setImages={setImages}
+          />
+        </Box>
       </Box>
     </Box>
   );

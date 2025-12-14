@@ -12,6 +12,7 @@ export const btnsWrapperStyle = {
   display: "flex",
   justifyContent: "space-between",
   mt: "auto",
+  alignItems: "center",
 };
 
 export const stepWrapperStyle = {

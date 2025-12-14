@@ -5,11 +5,17 @@ import type { FormData, FormErrors, Payload } from "../components/EventFormWizar
 import { LOCATION_TYPE_COORDINATE } from "../constants/eventConstants";
 import { createEvent, updateEventApi } from "../api/events";
 import { mapZodIssuesToFormErrors } from "../utiles/zodErrors";
+import { uploadImagesApi } from "../api/images";
 
 
 interface SubmitOptions {
   mode?: "create" | "edit";
   callback: (data: Payload) => void;
+}
+
+export interface UploadedImage {
+  file: File;
+  preview: string;
 }
 
 export function useEventForm(initialData?: Partial<FormData>) {
@@ -37,6 +43,7 @@ export function useEventForm(initialData?: Partial<FormData>) {
         ...initialData,
     }
 
+    const [images, setImages] = useState<UploadedImage[]>([]);
     const [errors, setErrors] = useState<FormErrors>({});
     const [formData, setFormData] = useState<FormData>(initialState);
 
@@ -107,8 +114,15 @@ export function useEventForm(initialData?: Partial<FormData>) {
                 setEvents(prev => prev.map(ev => ev.id === savedEvent.id ? savedEvent : ev));
             }
 
+            if (images.length > 0) {
+                await uploadImagesApi(savedEvent.id!, images);
+            }
+
             callback(savedEvent);
-            if (mode === "create") resetForm();
+            if (mode === "create"){
+                resetForm();
+                setImages([]);
+            }
 
         } catch (err: any) {
             console.error("Error saving event:", err);
@@ -127,7 +141,9 @@ export function useEventForm(initialData?: Partial<FormData>) {
     return {
         formData,
         errors,
+        images,
         setErrors,
+        setImages,
         updateField,
         takeCurrentLocation,
         handleSubmit,
