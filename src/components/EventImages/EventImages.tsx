@@ -1,14 +1,13 @@
 import { Box, CircularProgress, Typography } from "@mui/material";
-import { useEventImages } from "../../hooks/useEventImages";
 
 const serverUrl = import.meta.env.VITE_SERVER_URL
 
 interface EventImagesProps {
-  eventId: string;
+  images: any[];
+  loading: boolean;
 }
 
-export function EventImages({ eventId }: EventImagesProps) {
-  const { images, loading } = useEventImages(eventId);
+export function EventImages({ images, loading }: EventImagesProps) {
 
   if (loading) {
     return <CircularProgress size={24} />;

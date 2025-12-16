@@ -1,11 +1,16 @@
-import { useState } from "react";
-import { validateEventForm } from "../utiles/validateEventForm";
-import { useEvents } from "../context/EventsContext";
+import { useState, useRef } from "react";
+
 import type { FormData, FormErrors, Payload } from "../components/EventFormWizard/types";
+import type { EventImage } from "../types/eventImage";
+
+import { useEvents } from "../context/EventsContext";
 import { LOCATION_TYPE_COORDINATE } from "../constants/eventConstants";
-import { createEvent, updateEventApi } from "../api/events";
+
+import { validateEventForm } from "../utiles/validateEventForm";
 import { mapZodIssuesToFormErrors } from "../utiles/zodErrors";
-import { uploadImagesApi } from "../api/images";
+
+import { createEvent, updateEventApi } from "../api/events";
+import { uploadImagesApi, deleteEventImagesApi } from "../api/images";
 
 
 interface SubmitOptions {
@@ -13,13 +18,12 @@ interface SubmitOptions {
   callback: (data: Payload) => void;
 }
 
-export interface UploadedImage {
-  file: File;
-  preview: string;
-}
 
 export function useEventForm(initialData?: Partial<FormData>) {
     const { setEvents } = useEvents()
+
+    const [images, setImages] = useState<EventImage[]>([]);
+    const deletedImageIdsRef = useRef<string[]>([]);
 
     const initialState: FormData = {
         unitActivityType: "",
@@ -43,7 +47,6 @@ export function useEventForm(initialData?: Partial<FormData>) {
         ...initialData,
     }
 
-    const [images, setImages] = useState<UploadedImage[]>([]);
     const [errors, setErrors] = useState<FormErrors>({});
     const [formData, setFormData] = useState<FormData>(initialState);
 
@@ -114,8 +117,17 @@ export function useEventForm(initialData?: Partial<FormData>) {
                 setEvents(prev => prev.map(ev => ev.id === savedEvent.id ? savedEvent : ev));
             }
 
+            // Upload new images
             if (images.length > 0) {
-                await uploadImagesApi(savedEvent.id!, images);
+                const newImages = images.filter(img => img.isNew);
+                if (newImages.length > 0) await uploadImagesApi(savedEvent.id!, newImages);
+
+            }
+
+            // Delete removed images
+            if (deletedImageIdsRef.current.length > 0) {
+                await deleteEventImagesApi(savedEvent.id!, deletedImageIdsRef.current);
+                deletedImageIdsRef.current = [];
             }
 
             callback(savedEvent);
@@ -142,6 +154,7 @@ export function useEventForm(initialData?: Partial<FormData>) {
         formData,
         errors,
         images,
+        deletedImageIdsRef,
         setErrors,
         setImages,
         updateField,

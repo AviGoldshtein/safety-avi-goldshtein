@@ -20,9 +20,11 @@ interface EventCardProps {
   selectedEvent: any | null;
   onClose: () => void;
   onOpenEdit: (event: any) => void;
+  images: any[];
+  imagesLoading: boolean;
 }
 
-export function EventCard({ open, selectedEvent, onClose, onOpenEdit }: EventCardProps) {
+export function EventCard({ open, selectedEvent, onClose, onOpenEdit, images, imagesLoading }: EventCardProps) {
   const theme = useTheme();
   const { deleteEvent } = useEvents();
 
@@ -98,7 +100,10 @@ export function EventCard({ open, selectedEvent, onClose, onOpenEdit }: EventCar
                 תמונות מהאירוע
               </Typography>
 
-              <EventImages eventId={selectedEvent.id} />
+              <EventImages 
+                images={images}
+                loading={imagesLoading}
+                />
             </Box>
 
           </Box>

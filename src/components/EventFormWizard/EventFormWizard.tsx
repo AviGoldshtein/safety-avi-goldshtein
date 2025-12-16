@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Box,
   Stepper,
@@ -7,8 +7,7 @@ import {
   Button,
   IconButton,
 } from "@mui/material";
-import SendIcon from "@mui/icons-material/Send";
-import AttachFileIcon from "@mui/icons-material/AttachFile";
+import { Send, AttachFile } from "@mui/icons-material";
 
 import { useEventForm } from "../../hooks/useEventForm";
 import type { FormErrors, FormData } from "./types";
@@ -39,12 +38,14 @@ const stepFields: Record<number, string[]> = {
 
 interface EventFormWizardProps {
   initialData?: Partial<FormData>;
+  initialImages?: any[] | undefined;
   editMode?: boolean;
   onClose?: () => void;
 }
 
 export default function EventFormWizard({
   initialData,
+  initialImages,
   onClose,
   editMode = false,
 }: EventFormWizardProps) {
@@ -58,6 +59,7 @@ export default function EventFormWizard({
     validateEventForm,
     updateField,
     takeCurrentLocation,
+    deletedImageIdsRef,
   } = useEventForm(initialData);
 
   const [activeStep, setActiveStep] = useState(0);
@@ -68,6 +70,21 @@ export default function EventFormWizard({
     errors,
     updateField,
   };
+
+  useEffect(() => {
+    if (!editMode) return;
+    if (!initialImages || initialImages.length === 0) return;
+    if (images.length > 0) return;
+
+    const mappedImages = initialImages.map(img => ({
+      id: img.id,
+      url: img.url,
+      preview: `${import.meta.env.VITE_SERVER_URL}${img.url}`,
+      isNew: false,
+    }));
+
+    setImages(mappedImages);
+  }, [editMode, initialImages]);
 
   const stepComponents = [
     <Step1BasicDetails {...sharedProps} />,
@@ -154,7 +171,7 @@ export default function EventFormWizard({
             onClick={() => setOpenImageDialog(true)}
             sx={{ mr: 1 }}
           >
-            <AttachFileIcon />
+            <AttachFile />
           </IconButton>
 
           {activeStep < steps.length - 1 ? (
@@ -166,7 +183,7 @@ export default function EventFormWizard({
               variant="contained"
               color="success"
               onClick={handleFinalSubmit}
-              endIcon={<SendIcon sx={{ mr: 2 }} />}
+              endIcon={<Send sx={{ mr: 2 }} />}
             >
               שלח
             </Button>
@@ -177,6 +194,7 @@ export default function EventFormWizard({
             onClose={() => setOpenImageDialog(false)}
             images={images}
             setImages={setImages}
+            deletedImageIdsRef={deletedImageIdsRef}
           />
         </Box>
       </Box>

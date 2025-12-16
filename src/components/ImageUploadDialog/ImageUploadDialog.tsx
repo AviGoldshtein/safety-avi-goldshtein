@@ -1,35 +1,42 @@
 import { Box, Dialog, IconButton } from "@mui/material";
-
-export interface UploadedImage {
-  file: File;
-  preview: string;
-}
+import type { EventImage } from "../../types/eventImage";
 
 interface ImageUploadDialogProps {
   open: boolean;
-  images: UploadedImage[];
-  setImages: (imgs: UploadedImage[]) => void;
+  images: EventImage[];
+  setImages: (imgs: EventImage[]) => void;
   onClose: () => void;
+  deletedImageIdsRef: React.MutableRefObject<string[]>;
 }
+
 
 export default function ImageUploadDialog({
   open,
   images,
   setImages,
   onClose,
+  deletedImageIdsRef,
 }: ImageUploadDialogProps) {
+
   const handleFilesSelected = (files: FileList | null) => {
     if (!files) return;
 
     const newImages = Array.from(files).map((file) => ({
       file,
       preview: URL.createObjectURL(file),
+      isNew: true,
     }));
 
     setImages([...images, ...newImages]);
   };
 
   const removeImage = (index: number) => {
+    const imgId = images[index]?.id;
+
+    if (imgId && !deletedImageIdsRef.current.includes(imgId)) {
+      deletedImageIdsRef.current.push(imgId);
+    }
+
     setImages(images.filter((_, i) => i !== index));
   };
 

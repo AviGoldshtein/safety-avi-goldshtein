@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { fetchEventImagesApi } from "../api/images";
 
+
 export function useEventImages(eventId?: string) {
-  const [images, setImages] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [eventImages, setImages] = useState<any[]>([]);
+  const [eventLoading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!eventId) return;
@@ -14,5 +15,5 @@ export function useEventImages(eventId?: string) {
       .finally(() => setLoading(false));
   }, [eventId]);
 
-  return { images, loading };
+  return { eventImages, eventLoading };
 }

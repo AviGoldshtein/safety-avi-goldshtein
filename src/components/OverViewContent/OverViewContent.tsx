@@ -3,13 +3,14 @@ import { Box, Typography, DialogContent, Dialog } from "@mui/material";
 import EventNoteIcon from "@mui/icons-material/EventNote";
 
 import { useEventFilters } from "../../hooks/useEventFilters";
+import { useEventImages } from "../../hooks/useEventImages";
 import { useEvents } from "../../context/EventsContext";
-import { EventCard } from "./EventCard";
 import EventFormWizard from "../EventFormWizard/EventFormWizard";
 
-import { TableContent } from "./TableContent";
-import { TableFilters } from "./TableFilters";
 import { columns, initialHiddenColumns } from './tableConfig';
+import { TableFilters } from "./TableFilters";
+import { TableContent } from "./TableContent";
+import { EventCard } from "./EventCard";
 import { eventsContainerStyles, eventsHeaderStyles } from './OverViewContentStyles';
 
 
@@ -18,6 +19,7 @@ export function OverViewContent() {
   const [selectedEvent, setSelectedEvent] = useState<any | null>(null);
   const [openDetails, setOpenDetails] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
+  const { eventImages, eventLoading } = useEventImages(selectedEvent?.id);
 
   function onOpenDetails(event: any) {
     setSelectedEvent(event);
@@ -122,6 +124,8 @@ export function OverViewContent() {
         onClose={onCloseDetails}
         selectedEvent={selectedEvent}
         onOpenEdit={onOpenEdit}
+        images={eventImages}
+        imagesLoading={eventLoading}
       />
 
       {openEdit && selectedEvent && (
@@ -129,6 +133,7 @@ export function OverViewContent() {
           <DialogContent>
             <EventFormWizard
               initialData={selectedEvent}
+              initialImages={eventImages}
               editMode={true}
               onClose={onCloseEdit}
             />
