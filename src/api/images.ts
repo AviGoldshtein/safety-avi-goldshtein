@@ -14,3 +14,9 @@ export async function uploadImagesApi(eventId: string, images: UploadedImage[]) 
     body: formData
   });
 }
+
+export async function fetchEventImagesApi(eventId: string) {
+  const res = await fetch(`${serverUrl}/api/events/${eventId}/images`);
+  if (!res.ok) throw new Error("Failed to fetch images");
+  return res.json();
+}

@@ -12,6 +12,7 @@ import {
 import { columns } from "./tableConfig";
 import { scrollbarStyle } from "../../styles/scrollbar";
 import { useEvents } from "../../context/EventsContext";
+import { EventImages } from "../EventImages/EventImages";
 
 
 interface EventCardProps {
@@ -62,34 +63,44 @@ export function EventCard({ open, selectedEvent, onClose, onOpenEdit }: EventCar
         })}
       >
         {selectedEvent && (
-          <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-            {Object.entries(selectedEvent).map(([key, value]) => (
-              <Box key={key}>
-                <Typography
-                  variant="subtitle2"
-                  sx={{
-                    fontWeight: "bold",
-                    color: theme.palette.table.text
-                  }}
-                >
-                  {getLabel(key)}
-                </Typography>
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
 
-                <Typography
-                  variant="body1"
-                  sx={{ color: theme.palette.table.text }}
-                >
-                  {formatValue(value)}
-                </Typography>
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+              {Object.entries(selectedEvent).map(([key, value]) => (
+                <Box key={key}>
+                  <Typography
+                    variant="subtitle2"
+                    sx={{
+                      fontWeight: "bold",
+                      color: theme.palette.table.text
+                    }}
+                  >
+                    {getLabel(key)}
+                  </Typography>
 
-                <Divider
-                  sx={{
-                    mt: 1,
-                    borderColor: theme.palette.table.divider
-                  }}
-                />
-              </Box>
-            ))}
+                  <Typography
+                    variant="body1"
+                    sx={{ color: theme.palette.table.text }}
+                  >
+                    {formatValue(value)}
+                  </Typography>
+
+                  <Divider sx={{ mt: 1, borderColor: theme.palette.table.divider }} />
+                </Box>
+              ))}
+            </Box>
+
+            <Box>
+              <Typography
+                variant="subtitle1"
+                sx={{ fontWeight: "bold", mb: 1 }}
+              >
+                תמונות מהאירוע
+              </Typography>
+
+              <EventImages eventId={selectedEvent.id} />
+            </Box>
+
           </Box>
         )}
       </DialogContent>
@@ -98,11 +109,11 @@ export function EventCard({ open, selectedEvent, onClose, onOpenEdit }: EventCar
         <Button
           color="error"
           variant="contained"
+          sx={{ fontWeight: "bold" }}
           onClick={async () => {
             await deleteEvent(selectedEvent.id);
             onClose();
           }}
-          sx={{ fontWeight: "bold" }}
         >
           מחיקה
         </Button>
